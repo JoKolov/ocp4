@@ -1,0 +1,7 @@
+j_ni_default:
+    resource: "@JNiDefaultBundle/Resources/config/routing.yml"
+    prefix:   /
+
+j_ni_ticketing:
+    resource: "@JNiTicketingBundle/Resources/config/routing.yml"
+    prefix:   /ticketing

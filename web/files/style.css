@@ -1,0 +1,52 @@
+/**/
+body {
+	
+	background-image: url(/img/background-02.jpg);
+	
+	background-repeat: none;
+	background-size: 100%;/*
+	background-attachment: fixed;*/
+	background-repeat: no-repeat;
+	background-position: top;
+	/*background-color: #171814;*/
+	background-color: #fff;
+
+}
+
+.page-container {
+	/*
+	background-color: #171814;
+	 */
+	color: #ccc;
+	border-radius: 0em 0em 1em 1em;
+}
+
+header {
+	/*
+	height: 15em;
+	background-image: url(/img/header-bg.jpg);
+	background-size: cover;
+	background-position: center;
+	background-repeat: none;
+	*/
+	background-color: #272822;
+}
+
+nav {
+	background-color: #272822;
+}
+
+.block-body {
+	min-height: 20em;
+	background-color: #fff;
+	color: #222;
+	padding: 1em;
+}
+
+footer {
+	min-height: 5em;
+	background-color: #272822;
+	color: #666;
+	padding: 1em;
+	border-radius: 0 0 1em 1em;
+}

@@ -1,0 +1,72 @@
+
+{% extends "JNiDefaultBundle::layout.html.twig" %}
+
+{% block title %}
+ 	Billetterie - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<h3>Réservation de billets d'entrée</h3>
+	<div class="row">
+		
+		{# 
+		{{ form(formInvoice) }}
+		 #}	
+
+		{# Booking form #}
+		{{ form_start(formInvoice, {'attr': {'class': 'form-horizontal'}}) }}
+
+		{{ form_errors(formInvoice) }}
+
+		{# Field : date of visit #}
+		<div class="form-group">
+			<div class="col-sm-2">
+				<p class="control-label">Date de la visite</p>
+			</div>
+			{{ form_errors(formInvoice.date) }}
+			<div class="col-sm-10">
+				{{ form_widget(formInvoice.date) }}
+			</div>
+		</div>
+
+		{# Field : times of visit #}
+		<div class="form-group">
+			<div class="col-sm-2">
+				<p class="control-label">Demi-journée</p>
+			</div>
+			{{ form_errors(formInvoice.halfDay) }}
+			<div class="col-sm-10">
+				{{ form_widget(formInvoice.halfDay) }}
+			</div>
+		</div>
+
+		{# Field : email to send tickets #}
+		<div class="form-group">
+			<div class="col-sm-2">
+				<p class="control-label">Email de contact</p>
+			</div>
+			{{ form_errors(formInvoice.email) }}
+			<div class="col-sm-10">
+				{{ form_widget(formInvoice.email) }}
+			</div>
+		</div>			
+
+		{# Form : subform Visitor #}
+		<div class="col-xs-12">
+			{{ form_row(formInvoice.visitors) }}
+			<a href="#" id="add_visitor" class="btn btn-default">Ajouter un visiteur</a>
+		</div>
+
+		{# Form : validation button #}
+		<div class="col-xs-12">
+			<p></p>
+			{{ form_widget(formInvoice.valid, {'attr': {'class': 'btn btn-primary'}}) }}
+		</div>	
+
+		{# Form : hidden fields #}
+		{{ form_rest(formInvoice) }}
+
+		{# End of booking form #}
+		{{ form_end(formInvoice) }}
+	</div>
+{% endblock %}

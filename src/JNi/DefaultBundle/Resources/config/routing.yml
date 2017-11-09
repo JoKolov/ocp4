@@ -1,0 +1,3 @@
+jni_default_home:
+    path:     /
+    defaults: { _controller: JNiDefaultBundle:Default:index }
