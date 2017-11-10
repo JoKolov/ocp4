@@ -49,12 +49,23 @@ class Visitor
      */
     private $admissionRate;
 
+    /**
+     * @var boolean
+     */
+    private $reducedRate;
 
     /**
      * @ORM\ManyToOne(targetEntity="JNi\TicketingBundle\Entity\Invoice", inversedBy="visitors")
      * @ORM\JoinColumn(nullable=false)
      */
     private $invoice;
+
+
+    public function __construct()
+    {
+        $this->reducedRate = false;
+    }
+
 
     /**
      * Get id
@@ -163,6 +174,30 @@ class Visitor
     }
 
     /**
+     * Set admissionRate
+     *
+     * @param boolean $reducedRate
+     *
+     * @return Visitor
+     */
+    public function setReducedRate($reducedRate)
+    {
+        $this->reducedRate = $reducedRate;
+
+        return $this;
+    }
+
+    /**
+     * Get reducedRate
+     *
+     * @return boolean
+     */
+    public function getReducedRate()
+    {
+        return $this->reducedRate;
+    }
+
+    /**
      * Set invoice
      *
      * @param \JNi\TicketingBundle\Entity\Invoice $invoice
@@ -184,5 +219,26 @@ class Visitor
     public function getInvoice()
     {
         return $this->invoice;
+    }
+
+    /**
+     * Calculating visitor age referencing to specific date or actual date
+     * @param  \DateTime|null $dateRef Date to compare with (default = now())
+     * @return int  Age of visitor
+     */
+    public function getAge(\DateTime $dateRef = null)
+    {
+        $dateFormat = "d/m/Y";
+
+        $birthDate = $this->getBirthDate();
+        $dateRef = (is_null($dateRef)) ? new \DateTime() : $dateRef;
+
+        // converting both dates to UTC timezone
+        $birthDate->setTimezone(new \DateTimeZone('UTC'));
+        $dateRef->setTimezone(new \DateTimeZone('UTC'));
+
+        if ($birthDate > $dateRef) return 0;
+
+        return (int) $birthDate->diff($dateRef)->format('%Y');
     }
 }
