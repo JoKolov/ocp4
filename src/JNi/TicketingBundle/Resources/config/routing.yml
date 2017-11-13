@@ -1,10 +1,6 @@
-jni_ticketing_order_valid:
-    path: /transaction/success
-    defaults: { _controller: JNiTicketingBundle:Default:index }
-
-jni_ticketing_order_error:
-    path: /transaction/error
-    defaults: { _controller: JNiTicketingBundle:Default:index }
+jni_ticketing_order_confirmation:
+    path: /transaction/success/{id}
+    defaults: { _controller: JNiTicketingBundle:Booking:confirmation }
 
 jni_ticketing_home:
     path:     /

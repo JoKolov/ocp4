@@ -99,5 +99,11 @@ class Payment
     {
         return $this->stripeKey;
     }
+
+
+    public function isValid()
+    {
+        return !is_null($this->getStripeKey());
+    }
 }
 

@@ -237,4 +237,14 @@ class Invoice
     {
         return $this->visitors;
     }
+
+
+    /**
+     * get Currency for transaction // EUR
+     * @return string EUR
+     */
+    public function getCurrency()
+    {
+        return "EUR";
+    }
 }

@@ -1,0 +1,32 @@
+
+{% extends "JNiDefaultBundle::layout.html.twig" %}
+
+{% block title %}
+ 	Billetterie - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<h3>Réservation de billets d'entrée</h3>
+
+	{% for message in app.session.flashbag.get('success') %}
+		<p class="alert alert-success">{{ message }}</p>
+	{% endfor %}
+
+	{% if payment.isvalid %}
+		<div class="well">
+			<p>Jour de la visite : {{ invoice.date|date('d/m/Y') }}</p>
+			<p>Email de validation : {{ invoice.email }}</p>
+			<p>Visiteurs enregistrés :</p>
+			<ul>
+			{% for visitor in invoice.visitors %}
+				<li>{{ visitor.firstName }} {{ visitor.lastName }}, {{ visitor.age }} ans :: {{ visitor.admissionRate }} {{ invoice.currency }}</li>
+			{% endfor %}
+			</ul>
+			<p>Total de la commande : {{ amount }} {{ invoice.currency }}</p>
+			<p>STATUT : validé</p>
+		</div>
+	{% else %}
+		<p>aucune réservation enregistrée</p>
+	{% endif %}
+
+{% endblock %}

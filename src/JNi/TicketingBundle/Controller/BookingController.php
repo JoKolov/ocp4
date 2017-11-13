@@ -14,6 +14,7 @@ use JNi\TicketingBundle\Form\VisitorType;
 
 class BookingController extends Controller
 {
+    //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
     public function indexAction(Request $request)
     {
         $session = $request->getSession();
@@ -32,7 +33,24 @@ class BookingController extends Controller
     		// check if form is valid
     		if ($formInvoice->isValid())
     		{
-    			$session->getFlashBag()->add('success', "Formulaire validé");
+    			// Amount calculation
+                // amount calculations
+                $admissionRateRepository = $this
+                    ->getDoctrine()
+                    ->getManager()
+                    ->getRepository('JNiTicketingBundle:AdmissionRate');
+                $listAdmissionRates = $admissionRateRepository->getListAdmissionRatesByAgeDESC();
+                $listRedudecRates = $admissionRateRepository->getListAdmissionRatesByAgeDESC("reduced");
+
+                $amountCalculator = $this->get('jni_ticketing.amount_calculator'); // requiring amountCalcultaor service
+                // select rate for each visitor
+                foreach ($invoice->getVisitors() as $visitor)
+                {
+                    $rate = $amountCalculator->getVisitorAgeRate($visitor, $listAdmissionRates, $listRedudecRates);
+                    $visitor->setAdmissionRate($rate);
+                }
+
+                // saving Invoice in Session for next step : Payment
     			$session->set('invoice', $invoice);
 
     			// redirect to payment page
@@ -52,6 +70,8 @@ class BookingController extends Controller
     }
 
 
+
+    //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
     public function paymentAction(Request $request)
     {
         $session = $request->getSession();
@@ -63,41 +83,87 @@ class BookingController extends Controller
             return $this->redirectToRoute('jni_ticketing_home');
         }
 
-        // amount calculations
-        $admissionRateRepository = $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository('JNiTicketingBundle:AdmissionRate');
-        $listAdmissionRates = $admissionRateRepository->getListAdmissionRatesByAgeDESC();
-        $listRedudecRates = $admissionRateRepository->getListAdmissionRatesByAgeDESC("reduced");
-
-        $amountCalculator = $this->get('jni_ticketing.amount_calculator'); // requiring amountCalcultaor service
         $invoice = $session->get('invoice');
-        // select rate for each visitor
-        foreach ($invoice->getVisitors() as $visitor)
-        {
-            $rate = $amountCalculator->getVisitorAgeRate($visitor, $listAdmissionRates, $listRedudecRates);
-            $visitor->setAdmissionRate($rate);
-        }
+        $amountCalculator = $this->get('jni_ticketing.amount_calculator'); // requiring amountCalcultaor service
         // total amount calculation
-        $amount = $amountCalculator->getInvoiceAmount($invoice);
-        
+        $stripeAmount = $amountCalculator->getInvoiceAmount($invoice) * 100;
+
         // Payment check
         if ($request->isMethod('POST'))
         {
-            /*
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist([$invoice]);
-            $entityManager->flush();
-            */
+            try 
+            {
+                // stripe payment validation process
+                \Stripe\Stripe::setApiKey($this->container->getParameter('stripe_secret_key'));
+                $stripeCustomer = \Stripe\Customer::create([
+                    'email'   => $invoice->getEmail(),
+                    'source'  => $request->request->get('stripeToken')
+                ]);
+                $stripeCharge = \Stripe\Charge::create([
+                    'customer'  => $stripeCustomer->id,
+                    'amount'    => $stripeAmount,
+                    'currency'  => $invoice->getCurrency()
+                ]);
+
+                // payment confirmed
+                $session->getFlashBag()->add('success', "Paiement validé");
+
+                $payment = new Payment;
+                $payment->setStripeKey($request->request->get('stripeToken'));
+                $session->set('payment', $payment);
+
+                /*
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist([$invoice]);
+                $entityManager->flush();
+                */
+               $id = 0;
+                
+                // redirect to confirmation page
+                return $this->redirectToRoute('jni_ticketing_order_confirmation', ['id' => $id]);
+
+            } // error throw payment process
+            catch (\Stripe\Error\Card $e)
+            {
+                $session->getFlashBag()->add('danger', "Erreur [strCard] le paiement a été refusé");
+            }
+            catch (Exception $e)
+            {
+                $session->getFlashBag()->add('danger', "Erreur ! le paiement a été refusé");
+            }
         }
 
         // display view : basket summary + stripe form
         return $this->render('JNiTicketingBundle:Booking:payment.html.twig', [
-            'invoice'           => $session->get('invoice'),
+            'invoice'           => $invoice,
             'stripePublicKey'   => $this->container->getParameter('stripe_public_key'),
-            'amount'            => $amount * 100,
-            'currency'          => "EUR"
+            'amount'            => $stripeAmount
+        ]);
+    }
+
+
+
+    //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
+    public function confirmationAction(Request $request)
+    {
+        $session = $request->getSession();
+        $invoice = $session->get('invoice');
+        $payment = $session->get('payment');
+        $request->getSession()->remove('payment');
+
+        $amountCalculator = $this->get('jni_ticketing.amount_calculator');
+        $amount = $amountCalculator->getInvoiceAmount($invoice);
+
+        /**
+         * *****************************************
+         * Envoyer Email
+         * *****************************************
+         */
+
+        return $this->render('JNiTicketingBundle:Booking:confirmation.html.twig', [
+            'invoice'       => $invoice,
+            'payment'       => $payment,
+            'amount'        => $amount
         ]);
     }
 
