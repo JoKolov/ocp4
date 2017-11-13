@@ -8,22 +8,27 @@
 {% block body %}
 	<h3>Réservation de billets d'entrée</h3>
 
-	{% set messageFlash = app.session.flashbag.get('success') %}
-
-	{% for message in messageFlash %}
+	{% for message in app.session.flashbag.get('success') %}
 		<p class="alert alert-success">{{ message }}</p>
+	{% endfor %}
+
+	{% if invoice %}
 		<div class="well">
 			<p>Date : {{ invoice.date|date('d/m/Y') }}</p>
 			<p>Email : {{ invoice.email }}</p>
 			<p>Visiteurs enregistrés :</p>
+			<ul>
 			{% for visitor in invoice.visitors %}
-				<p>{{ visitor.firstName }} {{ visitor.lastName }}, né(e) le {{ visitor.birthDate|date('d/m/Y') }}</p>
+				<li>{{ visitor.firstName }} {{ visitor.lastName }}, né(e) le {{ visitor.age }} ans :: {{ visitor.admissionRate }} {{ currency }}</li>
 			{% endfor %}
+			</ul>
 		</div>
-	{% endfor %}
+	{% else %}
+		<p>aucune réservation enregistrée</p>
+	{% endif %}
+	
 
 	{# formulaire stripe #}
-	{% set amount = 2647 %}
 	<form action="#" method="POST">
 		<script
 			src="https://checkout.stripe.com/checkout.js" class="stripe-button"
@@ -33,7 +38,8 @@
 			data-description="Widget"
 			data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
 			data-locale="auto"
-			data-zip-code="true">
+			data-zip-code="true"
+		    data-currency="{{ currency }}">
 		</script>
 	</form>
 

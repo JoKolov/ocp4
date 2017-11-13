@@ -35,14 +35,7 @@ class BookingController extends Controller
     			$session->getFlashBag()->add('success', "Formulaire validé");
     			$session->set('invoice', $invoice);
 
-                $visitors = $invoice->getVisitors();
-                $this->debugVar($invoice->getDate()->format('d/m/Y'), "Date du billet :");
-                foreach ($visitors as $visitor) {
-                    $this->debugVar($visitor->getBirthDate()->format('d/m/Y'), "Date de naissance :");
-                    $this->debugVar($visitor->getAge($invoice->getDate()), "Age : ");
-                }
-
-    			// redirect to confirmation page
+    			// redirect to payment page
     			return $this->redirectToRoute('jni_ticketing_payment');
     		}
     	}
@@ -63,40 +56,32 @@ class BookingController extends Controller
     {
         $session = $request->getSession();
 
-        // objects creation
-
+        // no invoice to pay => redirect to tickets selection
         if (!$session->has('invoice'))
         {
             // redirect to home ticketing form
             return $this->redirectToRoute('jni_ticketing_home');
         }
 
-        
-        //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
-        // 1) Récupérer la liste des tarifs (collection de AdmissionRate)
-        // 2) Pour chaque visiteur -> attribuer un tarif ($visitor->setAdmissionRate() EQUIV)
-        // 3) Récupérer le total de la commande $amount = $this->get('JNiAmountCalculator')->getInvoiceAmount($invoice);
-        //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
+        // amount calculations
         $admissionRateRepository = $this
             ->getDoctrine()
             ->getManager()
             ->getRepository('JNiTicketingBundle:AdmissionRate');
         $listAdmissionRates = $admissionRateRepository->getListAdmissionRatesByAgeDESC();
+        $listRedudecRates = $admissionRateRepository->getListAdmissionRatesByAgeDESC("reduced");
 
-        $amountCalculator = $this->get('jni_ticketing.amount_calculator');
-
+        $amountCalculator = $this->get('jni_ticketing.amount_calculator'); // requiring amountCalcultaor service
         $invoice = $session->get('invoice');
+        // select rate for each visitor
         foreach ($invoice->getVisitors() as $visitor)
         {
-            $rate = $amountCalculator->getVisitorAgeRate($visitor, $listAdmissionRates);
-            if ($visitor->getReducedRate() and $rate > 10) // A MODIFIER !!!! Le 10 est trop moche !!!!
-            {
-                $rate = 10;
-            }
+            $rate = $amountCalculator->getVisitorAgeRate($visitor, $listAdmissionRates, $listRedudecRates);
             $visitor->setAdmissionRate($rate);
         }
-        
+        // total amount calculation
         $amount = $amountCalculator->getInvoiceAmount($invoice);
+        
         // Payment check
         if ($request->isMethod('POST'))
         {
@@ -110,7 +95,9 @@ class BookingController extends Controller
         // display view : basket summary + stripe form
         return $this->render('JNiTicketingBundle:Booking:payment.html.twig', [
             'invoice'           => $session->get('invoice'),
-            'stripePublicKey' => $this->container->getParameter('stripe_public_key')
+            'stripePublicKey'   => $this->container->getParameter('stripe_public_key'),
+            'amount'            => $amount * 100,
+            'currency'          => "EUR"
         ]);
     }
 

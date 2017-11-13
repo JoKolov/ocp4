@@ -17,10 +17,13 @@ class AdmissionRateRepository extends \Doctrine\ORM\EntityRepository
 		return $queryBuilder->getQuery()->getResult();
 	}
 
-	public function getListAdmissionRatesByAgeDESC()
+	public function getListAdmissionRatesByAgeDESC($type = "standard")
 	{
 		$queryBuilder = $this->createQueryBuilder('admissionRate');
-		$queryBuilder->orderBy('admissionRate.minimumAge', 'DESC');
+		$queryBuilder
+			->where('admissionRate.rateType = :type')
+				->setParameter('type', $type)
+			->orderBy('admissionRate.minimumAge', 'DESC');
 		return $queryBuilder->getQuery()->getResult();
 	}
 }

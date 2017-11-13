@@ -16,27 +16,32 @@ class LoadAdmissionRate implements FixtureInterface
 			'normal'	=> [
 				'rate'					=> 16,
 				'description'			=> "à partir de 12 ans",
+				'rateType' 				=> "standard",
 				'minimumAge' 			=> 12
 			],
 			'enfant'	=> [
 				'rate'					=> 8,
 				'description'			=> "à partir de 4 ans et jusqu’à 12 ans",
+				'rateType' 				=> "standard",
 				'minimumAge' 			=> 4
 			],
 			'senior'	=> [
 				'rate'					=> 12,
 				'description'			=> "à partir de 60 ans",
+				'rateType' 				=> "standard",
 				'minimumAge' 			=> 60
 			],
 			'gratuit'	=> [
 				'rate'					=> 0,
 				'description'			=> "moins de 4 ans",
+				'rateType' 				=> "standard",
 				'minimumAge' 			=> 0
 			],
 			"réduit"	=> [
 				'rate'					=> 10,
 				'description'			=> "accordé dans certaines conditions (étudiant, employé du musée, d’un service du Ministère de la Culture, militaire…)",
-				'minimumAge' 			=> null
+				'rateType' 				=> "reduced",
+				'minimumAge' 			=> 12
 			]
 		];
 
@@ -47,6 +52,7 @@ class LoadAdmissionRate implements FixtureInterface
 			$admissionRate->setRate($datas['rate']);
 			$admissionRate->setCurrency('EUR');
 			$admissionRate->setDescription($datas['description']);
+			$admissionRate->setRateType($datas['rateType']);
 			$admissionRate->setMinimumAge($datas['minimumAge']);
 			$manager->persist($admissionRate);
 		}

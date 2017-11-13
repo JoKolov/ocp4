@@ -51,9 +51,17 @@ class AdmissionRate
     private $description;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=255)
+     * 
+     */
+    private $rateType;
+
+    /**
      * @var int
      *
-     * @ORM\Column(name="age_min", type="integer", nullable=true)
+     * @ORM\Column(name="age_min", type="integer")
      * 
      */
     private $minimumAge;
@@ -187,5 +195,29 @@ class AdmissionRate
     public function getMinimumAge()
     {
         return $this->minimumAge;
+    }
+
+    /**
+     * Set rateType
+     *
+     * @param string $rateType
+     *
+     * @return AdmissionRate
+     */
+    public function setRateType($rateType)
+    {
+        $this->rateType = $rateType;
+
+        return $this;
+    }
+
+    /**
+     * Get rateType
+     *
+     * @return string
+     */
+    public function getRateType()
+    {
+        return $this->rateType;
     }
 }

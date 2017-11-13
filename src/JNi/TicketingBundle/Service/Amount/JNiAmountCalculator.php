@@ -26,19 +26,37 @@ class JNiAmountCalculator
 		return $amount;
 	}
 
-	public function getVisitorAgeRate(Visitor $visitor, Array $listAdmissionRates)
+	public function getVisitorAgeRate(Visitor $visitor, Array $listAdmissionRates, Array $listAdmissionReducedRates = [])
 	{
-		/*if (empty($listAdmissionRates) or !is_a($listAdmissionRates[0], 'AdmissionRate'))
+		/*$admissionRateClassName = 'AdsmissionRate';
+		if (empty($listAdmissionRates) or !$listAdmissionRates[0] instanceof $admissionRateClassName)
 		{
-			throw new \Exception("JNiAmountCalculator->getVisitorRate() : \$listAdmissionRates ne contient pas des instances de AdmissionRate", 1);
+			throw new \Exception("JNiAmountCalculator->getVisitorRate() : \$listAdmissionRates est vide ou ne contient pas des instances de AdmissionRate", 1);
 		}*/
 
 		foreach ($listAdmissionRates as $admissionRate)
 		{
 			if ($visitor->getAge() >= $admissionRate->getMinimumAge())
 			{
-				return $admissionRate->getRate();
+				$rate = $admissionRate->getRate();
+				break;
 			}
 		}
+
+		if (!$visitor->getReducedRate() or empty($listAdmissionReducedRates))
+		{
+			return $rate;
+		}
+
+		foreach ($listAdmissionReducedRates as $admissionReducedRate)
+		{
+			if ($visitor->getAge() >= $admissionReducedRate->getMinimumAge() and $rate > $admissionReducedRate->getRate())
+			{
+				$rate = $admissionReducedRate->getRate();
+				break;
+			}
+		}
+
+		return $rate;
 	}
 }

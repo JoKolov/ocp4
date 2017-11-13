@@ -21,8 +21,8 @@
     <div class="container page-container">
 
       {% block header %}
-        <header>
-          <div>
+        <header class="row">
+          <div class="col-xs-12">
             <img src="/img/logo-h50.png" class="img-responsive" alt="Musée du Louvre" />
           </div>
         </header>
@@ -30,37 +30,38 @@
 
 
       {% block nav %}
-        <nav>
-          <ul class="nav nav-pills">
-            <li role="presentation"><a href="{{ path('jni_default_home') }}">Accueil</a></li>
-            <li role="presentation"><a href="{{ path('jni_ticketing_home') }}">Billetterie</a></li>
-          </ul>        
+        <nav class="row">
+          <div class="col-xs-12">
+            <ul class="nav nav-pills">
+              <li role="presentation"><a href="{{ path('jni_default_home') }}">Accueil</a></li>
+              <li role="presentation"><a href="{{ path('jni_ticketing_home') }}">Billetterie</a></li>
+            </ul>  
+          </div>      
         </nav>
       {% endblock %}
 
-      <div class="block-body">
+      <section class="row block-body">
       {% block body %}
       
       {% endblock %}
-      </div>
+      </section>
 
 
       {% block footer %}
-        <footer>
-          <p class="text-center">Musée du Louvre - Paris © {{ 'now'|date('Y') }}</p>
+        <footer class="row">
+          <div class="col-xs-12">
+            <p class="text-center">Musée du Louvre - Paris © {{ 'now'|date('Y') }}</p>
+          </div>
         </footer>
       {% endblock %}
 
     </div>
 
     {% block javascripts %}
+      {# CDN JQUERY 3.2.1 #}
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
       {# CDN JS Bootstrap 3.3.7 #}
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-      {# CDN JQUERY 3.2.1 #}
-      <script
-        src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
-        crossorigin="anonymous"></script>
       {# visitors form Manager jQuery #}
       <script src="/files/visitorFormManager.js"></script>
     {% endblock %}
