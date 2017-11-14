@@ -1,0 +1,59 @@
+[33mcommit eeffb43727d1ca5ed8e034c90df8deb3f139d7f5[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: JoKolov <joffreynicoloff@gmail.com>
+Date:   Mon Nov 13 17:29:41 2017 +0100
+
+    Stripe payment integration
+    Can pay invoice, valid or reject payment with stripe.
+    
+    > upd Entity Invoice : add method getCurrency()
+    > upd Entity Payment : add method isValid()
+    > upd Routing in TicketingBundle
+    > add new page : order confirmation after payment
+    > upd BookingController : add method confirmationAction()
+    
+    NEXT : persist and save in DB entities
+
+[33mcommit 1463a992e32d867aa7e970fd5907e6f067c07ac5[m[33m ([m[1;31mocp4/master[m[33m)[m
+Author: JoKolov <joffreynicoloff@gmail.com>
+Date:   Mon Nov 13 14:44:45 2017 +0100
+
+    Update admission rates calculations
+    
+    > upd entity : admissionRate (new attr type)
+    > upd fixtures
+    > upd service : AmountCalculator
+    >>> including reduced rate check in the service
+    > upd BookingController : cleaning the code
+
+[33mcommit f62162b96bacb13cd92e5ace6ce74196f4e59ba7[m
+Author: JoKolov <joffreynicoloff@gmail.com>
+Date:   Sat Nov 11 00:27:33 2017 +0100
+
+    Add admission rates calculations
+    
+    > add entity : admissionRate
+    > add fixtures : admissionRates
+    > add service : AmountCalculator
+    > upd entity : Visitor
+    > upd formType : VisitorType
+    > upd BookingController
+    >> add admission rate calculation for visitors
+    >> add amount rate calculation
+    RMK : visitor rate calculation TO BE UPDATED NEXT
+
+[33mcommit d973883a52fb6e3708fb6c7abe6cf347acf2553c[m
+Author: JoKolov <joffreynicoloff@gmail.com>
+Date:   Thu Nov 9 16:36:42 2017 +0100
+
+    Initializing the project
+    
+    > installation of Symfony 3
+    > add 1st template
+    > add TicketingBundle
+    >> add entity : invoice
+    >> add entity : visitor
+    >> add entity : payment
+    >> add formType : invoice
+    >> add formType : visitor
+    >> add page : booking form
+    >> add page : payment form with stripe

@@ -1,16 +1,16 @@
 
-{% extends "JNiDefaultBundle::layout.html.twig" %}
+{% extends "JNiTicketingBundle::ticketingLayout.html.twig" %}
 
 {% block title %}
  	Billetterie - {{ parent() }}
 {% endblock %}
 
-{% block body %}
+{% block bodyContent %}
 	<h3>Réservation de billets d'entrée</h3>
 		
-		{# 
-		{{ form(formInvoice) }}
-		 #}	
+		{% for message in app.session.flashbag.get('alert') %}
+			<p class="alert alert-{{ message.type }}">{{ message.content }}</p>
+		{% endfor %}
 
 		{# Booking form #}
 		{{ form_start(formInvoice, {'attr': {'class': 'form-horizontal'}}) }}
@@ -67,5 +67,9 @@
 
 		{# End of booking form #}
 		{{ form_end(formInvoice) }}
+{% endblock %}
 
+{% block asideContent %}
+	<p>prix des billets</p>
+	<p>Emplacement du panier</p>
 {% endblock %}

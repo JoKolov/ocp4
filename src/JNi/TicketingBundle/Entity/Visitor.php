@@ -55,7 +55,7 @@ class Visitor
     private $reducedRate;
 
     /**
-     * @ORM\ManyToOne(targetEntity="JNi\TicketingBundle\Entity\Invoice", inversedBy="visitors")
+     * @ORM\ManyToOne(targetEntity="JNi\TicketingBundle\Entity\Invoice", inversedBy="visitors", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $invoice;

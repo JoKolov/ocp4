@@ -1,18 +1,16 @@
 
-{% extends "JNiDefaultBundle::layout.html.twig" %}
+{% extends "JNiTicketingBundle::ticketingLayout.html.twig" %}
 
 {% block title %}
  	Billetterie - {{ parent() }}
 {% endblock %}
 
-{% block body %}
+{% block bodyContent %}
 	<h3>Réservation de billets d'entrée</h3>
 
-	{% for message in app.session.flashbag.get('danger') %}
-		<p class="alert alert-danger">{{ message }}</p>
-		<p>Une erreur est survenue lors de la validation du paiement entrainant l'annulation de la procédure de paiement. <br />
-		Nous vous invitons à retenter la procédure.<br />
-		Si l'erreur se reproduit, contactez nous.</p>
+	{% for message in app.session.flashbag.get('alert') %}
+		<p class="alert alert-{{ message.type }}">{{ message.content }}</p>
+		<p>Retentez le paiement ou contactez-nous.</p>
 	{% endfor %}
 
 	{% if invoice %}
@@ -25,6 +23,7 @@
 				<li>{{ visitor.firstName }} {{ visitor.lastName }}, {{ visitor.age }} ans :: {{ visitor.admissionRate }} {{ invoice.currency }}</li>
 			{% endfor %}
 			</ul>
+			<p>Total de la commande : {{ amount }} {{ invoice.currency }}</p>
 		</div>
 	{% else %}
 		<p>aucune réservation enregistrée</p>
@@ -36,13 +35,14 @@
 		<script
 			src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 			data-key="{{ stripePublicKey }}"
-			data-amount="{{ amount }}"
-			data-name="Stripe.com"
-			data-description="Widget"
-			data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+			data-amount="{{ stripeAmount }}"
+			data-name="Musée du Louvre"
+			data-description="Billetterie"
+			data-image="/img/stripe-logo-03.jpg"
 			data-locale="auto"
 			data-zip-code="true"
-		    data-currency="{{ invoice.currency }}">
+		    data-currency="{{ invoice.currency }}"
+		    data-email="{{ invoice.email }}">
 		</script>
 	</form>
 

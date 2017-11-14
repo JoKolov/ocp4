@@ -33,8 +33,7 @@ class BookingController extends Controller
     		// check if form is valid
     		if ($formInvoice->isValid())
     		{
-    			// Amount calculation
-                // amount calculations
+    			// amount calculations
                 $admissionRateRepository = $this
                     ->getDoctrine()
                     ->getManager()
@@ -48,6 +47,7 @@ class BookingController extends Controller
                 {
                     $rate = $amountCalculator->getVisitorAgeRate($visitor, $listAdmissionRates, $listRedudecRates);
                     $visitor->setAdmissionRate($rate);
+                    $visitor->setInvoice($invoice);
                 }
 
                 // saving Invoice in Session for next step : Payment
@@ -88,6 +88,15 @@ class BookingController extends Controller
         // total amount calculation
         $stripeAmount = $amountCalculator->getInvoiceAmount($invoice) * 100;
 
+        if ($stripeAmount <= 0)
+        {
+            $session->getFlashBag()->add('alert', [
+                'type'      => 'warning',
+                'content'   => 'Au moins une entrée payante est requise pour réserver.'
+            ]);
+            return $this->redirectToRoute('jni_ticketing_home');
+        }
+
         // Payment check
         if ($request->isMethod('POST'))
         {
@@ -106,30 +115,32 @@ class BookingController extends Controller
                 ]);
 
                 // payment confirmed
-                $session->getFlashBag()->add('success', "Paiement validé");
+                $session->getFlashBag()->add('alert', [
+                    'type'      => 'success', 
+                    'content'   => "Paiement validé"
+                ]);
 
                 $payment = new Payment;
                 $payment->setStripeKey($request->request->get('stripeToken'));
-                $session->set('payment', $payment);
+                $invoice->setHashedKey(hash('sha256', 'LouvreTicket' . $payment->getStripeKey() . $invoice->getEmail()));
 
-                /*
+                $invoice->setPayment($payment);
+                $session->set('invoice', $invoice);
+
                 $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist([$invoice]);
+                $entityManager->persist($invoice);
                 $entityManager->flush();
-                */
-               $id = 0;
                 
                 // redirect to confirmation page
-                return $this->redirectToRoute('jni_ticketing_order_confirmation', ['id' => $id]);
+                return $this->redirectToRoute('jni_ticketing_order_confirmation', ['key' => $invoice->getHashedKey()]);
 
             } // error throw payment process
-            catch (\Stripe\Error\Card $e)
-            {
-                $session->getFlashBag()->add('danger', "Erreur [strCard] le paiement a été refusé");
-            }
             catch (Exception $e)
             {
-                $session->getFlashBag()->add('danger', "Erreur ! le paiement a été refusé");
+                $session->getFlashBag()->add('alert', [
+                    'type'      => 'danger',
+                    'content'   => "Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu."
+                ]);
             }
         }
 
@@ -137,20 +148,42 @@ class BookingController extends Controller
         return $this->render('JNiTicketingBundle:Booking:payment.html.twig', [
             'invoice'           => $invoice,
             'stripePublicKey'   => $this->container->getParameter('stripe_public_key'),
-            'amount'            => $stripeAmount
+            'amount'            => $stripeAmount / 100,
+            'stripeAmount'      => $stripeAmount
         ]);
     }
 
 
 
     //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
-    public function confirmationAction(Request $request)
+    public function confirmationAction($key, Request $request)
     {
+        // removing invoice from session
         $session = $request->getSession();
-        $invoice = $session->get('invoice');
-        $payment = $session->get('payment');
-        $request->getSession()->remove('payment');
+        if ($session->has('invoice'))
+        {
+            $session->remove('invoice');
+        }
 
+        // query invoice in db from its hashed key
+        $repository = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('JNiTicketingBundle:Invoice');
+        $invoice = $repository->findOneBy(['hashedKey' => $key]);
+
+        // invoice not found => redirect to ticketing home page
+        if (is_null($invoice))
+        {
+            $session->getFlashBag()->add('alert', [
+                'type'      => 'warning',
+                'content'   => "La réservation demandée n'existe pas ou plus."
+            ]);
+            return $this->redirectToRoute('jni_ticketing_home');
+        }
+
+        // invoice found
+        // amount calculation
         $amountCalculator = $this->get('jni_ticketing.amount_calculator');
         $amount = $amountCalculator->getInvoiceAmount($invoice);
 
@@ -162,7 +195,6 @@ class BookingController extends Controller
 
         return $this->render('JNiTicketingBundle:Booking:confirmation.html.twig', [
             'invoice'       => $invoice,
-            'payment'       => $payment,
             'amount'        => $amount
         ]);
     }

@@ -52,13 +52,13 @@ class Invoice
     private $halfDay;
 
     /**
-     * @ORM\OneToOne(targetEntity="JNi\TicketingBundle\Entity\Payment")
+     * @ORM\OneToOne(targetEntity="JNi\TicketingBundle\Entity\Payment", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $payment;
 
     /**
-     * @ORM\OneToMany(targetEntity="JNi\TicketingBundle\Entity\Visitor", mappedBy="invoice")
+     * @ORM\OneToMany(targetEntity="JNi\TicketingBundle\Entity\Visitor", mappedBy="invoice", cascade={"persist"})
      */
     private $visitors;
     

@@ -1,0 +1,21 @@
+
+{% extends "JNiDefaultBundle::layout.html.twig" %}
+
+{% block title %}
+ 	Billetterie - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<div class="col-sm-9">
+		{% block bodyContent %}
+		{% endblock %}
+	</div>
+{% endblock %}
+
+{% block asideRight %}
+	<aside class="col-sm-3">
+		{% block asideContent %}
+			<p>-- Block aside --</p>
+		{% endblock %}
+	</aside>
+{% endblock %}
