@@ -130,6 +130,27 @@ class BookingController extends Controller
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($invoice);
                 $entityManager->flush();
+
+                // sending confirmation email
+                $mailer = $this->get('mailer');
+                $message = (new \Swift_Message())
+                    ->setSubject("Confirmation Réservation Musée du Louvre")
+                    ->setFrom(['no-reply@musee.louvre.fr'   =>  "Musée du Louvre"])
+                    ->setTo([$invoice->getEmail()])
+                    ->setContentType('text/html')
+                ;
+                $message->setBody(
+                    $this->renderView(
+                        'JNiTicketingBundle:Booking:confirmationEmail.html.twig', [
+                            /*'imgLogo'   => $message->embed(\Swift_Image::fromPath('/img/logo.png')),*/
+                            'invoice'   => $invoice,
+                            'amount'    => $stripeAmount / 100,
+                            'urlConfirmation'   => $this->generateUrl('jni_ticketing_order_confirmation', ['key' => $invoice->getHashedKey()])
+                        ]
+                    ), 'text/html'
+                );
+
+                $mailer->send($message);
                 
                 // redirect to confirmation page
                 return $this->redirectToRoute('jni_ticketing_order_confirmation', ['key' => $invoice->getHashedKey()]);
@@ -186,12 +207,6 @@ class BookingController extends Controller
         // amount calculation
         $amountCalculator = $this->get('jni_ticketing.amount_calculator');
         $amount = $amountCalculator->getInvoiceAmount($invoice);
-
-        /**
-         * *****************************************
-         * Envoyer Email
-         * *****************************************
-         */
 
         return $this->render('JNiTicketingBundle:Booking:confirmation.html.twig', [
             'invoice'       => $invoice,

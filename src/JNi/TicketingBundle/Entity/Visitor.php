@@ -241,4 +241,13 @@ class Visitor
 
         return (int) $birthDate->diff($dateRef)->format('%Y');
     }
+
+    /**
+     * @return string firstName (space) lastName
+     */
+    public function getFullName()
+    {
+        $fullname = $this->getFirstName() . ' ' . $this->getLastName();
+        return $fullname;
+    }
 }
