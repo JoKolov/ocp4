@@ -5,6 +5,8 @@ namespace JNi\TicketingBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use JNi\TicketingBundle\Validator\OpeningDate;
 
 /**
  * Invoice
@@ -34,6 +36,8 @@ class Invoice
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Email(checkMX=true, message="Adresse email invalide, le domaine n'existe pas")
      */
     private $email;
 
@@ -41,6 +45,9 @@ class Invoice
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\Date()
+     * @OpeningDate()
      */
     private $date;
 
@@ -246,5 +253,19 @@ class Invoice
     public function getCurrency()
     {
         return "EUR";
+    }
+
+    /**
+     * Constraint to check if HalfDay need to be TRUE
+     * @Assert\IsTrue(message="A partir de 14h, le ticket demi-journée doit être sélectionné")
+     */
+    public function isHalfDay()
+    {
+        $now = new \DateTime;
+        if (!$this->getHalfDay() and $this->getDate()->format("d/m/Y") == $now->format("d/m/Y") and $now->format("H") >= 14)
+        {
+            return false; // constraint !! HalfDAy need to be true checked
+        }
+        return true;
     }
 }

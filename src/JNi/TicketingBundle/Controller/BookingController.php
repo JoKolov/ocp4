@@ -142,7 +142,6 @@ class BookingController extends Controller
                 $message->setBody(
                     $this->renderView(
                         'JNiTicketingBundle:Booking:confirmationEmail.html.twig', [
-                            /*'imgLogo'   => $message->embed(\Swift_Image::fromPath('/img/logo.png')),*/
                             'invoice'   => $invoice,
                             'amount'    => $stripeAmount / 100,
                             'urlConfirmation'   => $this->generateUrl('jni_ticketing_order_confirmation', ['key' => $invoice->getHashedKey()])
@@ -156,6 +155,48 @@ class BookingController extends Controller
                 return $this->redirectToRoute('jni_ticketing_order_confirmation', ['key' => $invoice->getHashedKey()]);
 
             } // error throw payment process
+            catch(\Stripe\Error\Card $e) 
+            {
+                $session->getFlashBag()->add('alert', [
+                    'type'      => 'danger',
+                    'content'   => "Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu. [rejected card]"
+                ]);
+            }
+            catch (\Stripe\Error\RateLimit $e)
+            {
+                $session->getFlashBag()->add('alert', [
+                    'type'      => 'danger',
+                    'content'   => "Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu. [overload syst]"
+                ]);
+            }
+            catch (\Stripe\Error\InvalidRequest $e)
+            {
+                $session->getFlashBag()->add('alert', [
+                    'type'      => 'danger',
+                    'content'   => "Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu. [bad request]"
+                ]);
+            }
+            catch (\Stripe\Error\Authentication $e)
+            {
+                $session->getFlashBag()->add('alert', [
+                    'type'      => 'danger',
+                    'content'   => "Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu. [stripe auth failed]"
+                ]);
+            }
+            catch (\Stripe\Error\ApiConnection $e)
+            {
+                $session->getFlashBag()->add('alert', [
+                    'type'      => 'danger',
+                    'content'   => "Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu. [stripe API offline]"
+                ]);
+            }
+            catch (\Stripe\Error\Base $e)
+            {
+                $session->getFlashBag()->add('alert', [
+                    'type'      => 'danger',
+                    'content'   => "Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu."
+                ]);
+            }
             catch (Exception $e)
             {
                 $session->getFlashBag()->add('alert', [
