@@ -19,7 +19,7 @@
 			<p>Visiteurs enregistrés :</p>
 			<ul>
 			{% for visitor in invoice.visitors %}
-				<li>{{ visitor.firstName }} {{ visitor.lastName }}, {{ visitor.age }} ans :: {{ visitor.admissionRate }} {{ invoice.currency }}</li>
+				<li>{{ visitor.fullName }}, {{ visitor.country }}, {{ visitor.age }} ans ({{ visitor.admissionRate }} {{ invoice.currency }})</li>
 			{% endfor %}
 			</ul>
 			<p>Total de la commande : {{ amount }} {{ invoice.currency }}</p>

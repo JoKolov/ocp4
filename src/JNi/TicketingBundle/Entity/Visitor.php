@@ -4,6 +4,7 @@ namespace JNi\TicketingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use JNi\TicketingBundle\Validator\BirthDate;
 
 /**
  * Visitor
@@ -26,6 +27,12 @@ class Visitor
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\Regex(
+     *     pattern =     "/^[<>\{\}]+$/i",
+     *     htmlPattern = "^[<>\{\}]+$",
+     *     match=false,
+     *     message = "Entrez un prénom valide (lettres MAJ/min, espace, tiret -, apostrophe")
      */
     private $firstName;
 
@@ -33,13 +40,29 @@ class Visitor
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\Regex(
+     *     pattern =     "/^[<>\{\}]+$/i",
+     *     htmlPattern = "^[<>\{\}]+$",
+     *     match=false,
+     *     message = "Entrez un nom valide (lettres MAJ/min, espace, tiret -, apostrophe")
      */
     private $lastName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="country", type="string", length=255)
+     * @Assert\Country
+     */
+    private $country;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="birthDate", type="datetime")
+     * @Assert\Date()
+     * @BirthDate()
      */
     private $birthDate;
 
@@ -52,6 +75,7 @@ class Visitor
 
     /**
      * @var boolean
+     * @Assert\Type("bool")
      */
     private $reducedRate;
 
@@ -250,5 +274,29 @@ class Visitor
     {
         $fullname = $this->getFirstName() . ' ' . $this->getLastName();
         return $fullname;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     *
+     * @return Visitor
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
     }
 }

@@ -13,7 +13,7 @@
 	<p>Visiteurs :</p>
 	<ul>
 	{% for visitor in invoice.visitors %}
-		<li>{{ visitor.fullName }}, {{ visitor.age }} ans</li>
+		<li>{{ visitor.fullName }}, {{ visitor.country }}, {{ visitor.age }} ans</li>
 	{% endfor %}
 	</ul>
 	<p>Code de réservation : {{ invoice.getHashedKey }} <br />

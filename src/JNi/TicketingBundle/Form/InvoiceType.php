@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type;
 use JNi\TicketingBundle\Form\VisitorType;
-use JNi\TicketingBundle\Form\PaymentType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class InvoiceType extends AbstractType
@@ -18,15 +17,16 @@ class InvoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date',       Type\DateType::class)
-            ->add('halfDay',    Type\CheckboxType::class, ['required' => false])
-            ->add('email',      Type\EmailType::class)
+            ->add('date',       Type\DateType::class, ['label' => "Date de la visite"])
+            ->add('halfDay',    Type\CheckboxType::class, ['label' => "Entrée à partir de 14h", 'required' => false])
+            ->add('email',      Type\EmailType::class, ['label' => "Email de confirmation"])
             ->add('visitors',    CollectionType::class, [
+                'label'         => "Liste des visiteurs",
                 'entry_type'    => VisitorType::class,
                 'allow_add'     => true,
                 'allow_delete'  => true
                 ]) // add form visitor
-            ->add('valid',     Type\SubmitType::class)
+            ->add('valid',     Type\SubmitType::class, ['label' => "Valider"])
         ;    
     }
     

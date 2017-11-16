@@ -55,6 +55,7 @@ class Invoice
      * @var bool
      *
      * @ORM\Column(name="halfDay", type="boolean")
+     * @Assert\Type("bool")
      */
     private $halfDay;
 
@@ -66,6 +67,7 @@ class Invoice
 
     /**
      * @ORM\OneToMany(targetEntity="JNi\TicketingBundle\Entity\Visitor", mappedBy="invoice", cascade={"persist"})
+     * @Assert\Valid()
      */
     private $visitors;
     
