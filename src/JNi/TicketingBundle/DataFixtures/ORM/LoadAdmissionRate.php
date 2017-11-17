@@ -14,19 +14,19 @@ class LoadAdmissionRate implements FixtureInterface
 	{
 		$admissionRateDatas = [
 			'normal'	=> [
-				'rate'					=> 16,
+				'rate'					=> 1600,
 				'description'			=> "à partir de 12 ans",
 				'rateType' 				=> "standard",
 				'minimumAge' 			=> 12
 			],
 			'enfant'	=> [
-				'rate'					=> 8,
+				'rate'					=> 800,
 				'description'			=> "à partir de 4 ans et jusqu’à 12 ans",
 				'rateType' 				=> "standard",
 				'minimumAge' 			=> 4
 			],
 			'senior'	=> [
-				'rate'					=> 12,
+				'rate'					=> 1200,
 				'description'			=> "à partir de 60 ans",
 				'rateType' 				=> "standard",
 				'minimumAge' 			=> 60
@@ -38,7 +38,7 @@ class LoadAdmissionRate implements FixtureInterface
 				'minimumAge' 			=> 0
 			],
 			"réduit"	=> [
-				'rate'					=> 10,
+				'rate'					=> 1000,
 				'description'			=> "accordé dans certaines conditions (étudiant, employé du musée, d’un service du Ministère de la Culture, militaire…)",
 				'rateType' 				=> "reduced",
 				'minimumAge' 			=> 12

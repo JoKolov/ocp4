@@ -19,7 +19,15 @@ class BookingController extends Controller
     {
         $session = $request->getSession();
 
-        $invoice = new Invoice;
+        if ($session->has('invoice'))
+        {
+            $invoice = $session->get('invoice');
+            $session->remove('invoice');
+        }
+        else
+        {
+            $invoice = new Invoice;
+        }
 
     	// admission form creation
     	$formInvoice = $this->createForm(InvoiceType::class, $invoice);
@@ -33,23 +41,10 @@ class BookingController extends Controller
     		// check if form is valid
     		if ($formInvoice->isValid())
     		{
-    			// amount calculations
-                $admissionRateRepository = $this
-                    ->getDoctrine()
-                    ->getManager()
-                    ->getRepository('JNiTicketingBundle:AdmissionRate');
-                $listAdmissionRates = $admissionRateRepository->getListAdmissionRatesByAgeDESC();
-                $listRedudecRates = $admissionRateRepository->getListAdmissionRatesByAgeDESC("reduced");
-
-                $amountCalculator = $this->get('jni_ticketing.amount_calculator'); // requiring amountCalcultaor service
-                // select rate for each visitor
-                foreach ($invoice->getVisitors() as $visitor)
-                {
-                    $rateCoeff = ($invoice->getHalfDay()) ? 0.5 : 1;
-                    $rate = $amountCalculator->getVisitorAgeRate($visitor, $listAdmissionRates, $listRedudecRates) * $rateCoeff;
-                    $visitor->setAdmissionRate($rate);
-                    $visitor->setInvoice($invoice);
-                }
+                // calcul total amount for this invoice
+                $amountCalculator = $this->get('ticketing.amount_calculator'); // requiring amountCalculator service
+                $amount = $amountCalculator->getInvoiceAmount($invoice);
+                $invoice->setAmount($amount);
 
                 // saving Invoice in Session for next step : Payment
     			$session->set('invoice', $invoice);
@@ -57,11 +52,6 @@ class BookingController extends Controller
     			// redirect to payment page
     			return $this->redirectToRoute('jni_ticketing_payment');
     		}
-    	}
-
-    	if ($session->has('invoice'))
-    	{
-    		$session->remove('invoice');
     	}
 
     	// 1st view or invalid form => show form
@@ -85,9 +75,7 @@ class BookingController extends Controller
         }
 
         $invoice = $session->get('invoice');
-        $amountCalculator = $this->get('jni_ticketing.amount_calculator'); // requiring amountCalcultaor service
-        // total amount calculation
-        $stripeAmount = $amountCalculator->getInvoiceAmount($invoice) * 100;
+        $stripeAmount = $invoice->getAmount();
 
         if ($stripeAmount <= 0)
         {

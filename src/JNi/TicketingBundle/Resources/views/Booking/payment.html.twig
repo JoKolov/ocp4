@@ -15,15 +15,15 @@
 
 	{% if invoice %}
 		<div class="well">
-			<p>Jour de la visite : {{ invoice.date|date('d/m/Y') }}</p>
+			<p>Jour de la visite : {{ invoice.date|date('d/m/Y') }} ( {{ invoice.ticketDayType }} )</p>
 			<p>Email de confirmation : {{ invoice.email }}</p>
 			<p>Visiteurs enregistrés :</p>
 			<ul>
 			{% for visitor in invoice.visitors %}
-				<li>{{ visitor.fullName }}, {{ visitor.country }}, {{ visitor.age }} ans ({{ visitor.admissionRate }} {{ invoice.currency }})</li>
+				<li>{{ visitor.fullName }}, {{ visitor.country }}, {{ visitor.age }} ans</li>
 			{% endfor %}
 			</ul>
-			<p>Total de la commande : {{ amount }} {{ invoice.currency }}</p>
+			<p>Total de la commande : {{ invoice.amountWithCurrency }}</p>
 		</div>
 	{% else %}
 		<p>aucune réservation enregistrée</p>
@@ -35,7 +35,7 @@
 		<script
 			src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 			data-key="{{ stripePublicKey }}"
-			data-amount="{{ stripeAmount }}"
+			data-amount="{{ invoice.amount }}"
 			data-name="Musée du Louvre"
 			data-description="Billetterie"
 			data-image="/img/stripe-logo-03.jpg"

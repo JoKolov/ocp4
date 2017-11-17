@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class OpeningDate extends Constraint
+class ArrayNotEmpty extends Constraint
 {
-  public $message = "{{ message }}";
+  public $message = "Empty value";
 }

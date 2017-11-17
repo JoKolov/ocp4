@@ -1,7 +1,5 @@
 <?php
-
 namespace JNi\TicketingBundle\Repository;
-
 /**
  * AdmissionRateRepository
  *
@@ -10,13 +8,6 @@ namespace JNi\TicketingBundle\Repository;
  */
 class AdmissionRateRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function getListAdmissionRatesByRateDESC()
-	{
-		$queryBuilder = $this->createQueryBuilder('admissionRate');
-		$queryBuilder->orderBy('admissionRate.rate', 'DESC');
-		return $queryBuilder->getQuery()->getResult();
-	}
-
 	public function getListAdmissionRatesByAgeDESC($type = "standard")
 	{
 		$queryBuilder = $this->createQueryBuilder('admissionRate');

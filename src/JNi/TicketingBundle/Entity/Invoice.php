@@ -6,7 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
-use JNi\TicketingBundle\Validator\OpeningDate;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use JNi\TicketingBundle\Validator\NotPastDay;
+use JNi\TicketingBundle\Validator\NotCloseDay;
+use JNi\TicketingBundle\Validator\NotBlankDay;
+use JNi\TicketingBundle\Validator\ArrayNotEmpty;
+use JNi\TicketingBundle\Validator\HalfDayRequired;
 
 /**
  * Invoice
@@ -47,7 +52,9 @@ class Invoice
      * @ORM\Column(name="date", type="datetime")
      * @Assert\NotBlank()
      * @Assert\Date()
-     * @OpeningDate()
+     * @NotPastDay()
+     * @NotCloseDay()
+     * @NotBlankDay()
      */
     private $date;
 
@@ -56,6 +63,7 @@ class Invoice
      *
      * @ORM\Column(name="halfDay", type="boolean")
      * @Assert\Type("bool")
+     * Other constraint : see isHalfDay() method
      */
     private $halfDay;
 
@@ -67,9 +75,16 @@ class Invoice
 
     /**
      * @ORM\OneToMany(targetEntity="JNi\TicketingBundle\Entity\Visitor", mappedBy="invoice", cascade={"persist"})
+     * @ArrayNotEmpty(message="Au moins un visiteur doit être renseigné")
      * @Assert\Valid()
      */
     private $visitors;
+
+    /**
+     * @ORM\Column(name="amount", type="integer")
+     * //@Assert\Range(min=1, minMessage="Les enfants en bas âge doivent être accompagnés, veuillez réserver un billet adulte en plus")
+     */
+    private $amount;
     
 
     /**
@@ -79,6 +94,7 @@ class Invoice
     {
         $this->visitors = new ArrayCollection();
         $this->date = new \DateTime();
+        $this->amount = 0;
     }
 
 
@@ -173,6 +189,12 @@ class Invoice
      */
     public function setHalfDay($halfDay)
     {
+        $now = new \DateTime;
+        if (!$halfDay and $this->getDate()->format("d/m/Y") == $now->format("d/m/Y") and $now->format("H") >= 14)
+        {
+            $halfDay = true;
+        }
+
         $this->halfDay = $halfDay;
 
         return $this;
@@ -222,6 +244,7 @@ class Invoice
      */
     public function addVisitor(\JNi\TicketingBundle\Entity\Visitor $visitor)
     {
+        $visitor->setInvoice($this);
         $this->visitors[] = $visitor;
 
         return $this;
@@ -257,17 +280,69 @@ class Invoice
         return "EUR";
     }
 
+
     /**
      * Constraint to check if HalfDay need to be TRUE
-     * @Assert\IsTrue(message="A partir de 14h, le ticket demi-journée doit être sélectionné")
+     * @Assert\Callback
      */
-    public function isHalfDay()
+    public function isHalfDayValid(ExecutionContextInterface $context)
     {
         $now = new \DateTime;
         if (!$this->getHalfDay() and $this->getDate()->format("d/m/Y") == $now->format("d/m/Y") and $now->format("H") >= 14)
         {
-            return false; // constraint !! HalfDAy need to be true checked
+            $context
+                ->buildViolation("A partir de 14h, le ticket demi-journée doit être sélectionné")
+                ->atPath('halfDay')
+                ->addViolation();
         }
-        return true;
+    }
+
+    /**
+     * Set amount
+     *
+     * @param integer $amount
+     *
+     * @return Invoice
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * Get amount
+     *
+     * @return integer
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * Get amount with currency 10.00 EUR
+     *
+     * @return string
+     */
+    public function getAmountWithCurrency()
+    {
+        $amount = $this->amount / 100;
+        return $amount . " " . $this->getCurrency();
+    }
+
+    /**
+     * Get ticket Day Type : ex : day / half-day
+     *
+     * @return string
+     */
+    public function getTicketDayType()
+    {
+        if ($this->getHalfDay())
+        {
+            return "Demi-journée";
+        }
+        return "Journée";
     }
 }
