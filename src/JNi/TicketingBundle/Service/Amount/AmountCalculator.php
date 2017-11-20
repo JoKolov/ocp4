@@ -1,5 +1,5 @@
 <?php
-// src/JNi/TicketingBundle/Service/Amount/JNiAmountCalculator.php
+// src/JNi/TicketingBundle/Service/Amount/AmountCalculator.php
 
 namespace JNi\TicketingBundle\Service\Amount;
 

@@ -345,4 +345,14 @@ class Invoice
         }
         return "Journée";
     }
+
+
+    public function generateHashedKey()
+    {
+        $keyHead = ($this->getHalfDay()) ? "WH" : "WD";
+        $keyContent = uniqid() . hash('md5', $this->getEmail());
+        $keyContent = strtoupper($keyContent);
+        $this->hashedKey = $keyHead . substr($keyContent, 0, 20);
+        return $this->hashedKey;
+    }
 }

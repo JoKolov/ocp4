@@ -69,7 +69,7 @@ class Visitor
     /**
      * @var string
      *
-     * @ORM\Column(name="admissionRate", type="decimal", precision=2, scale=0)
+     * @ORM\Column(name="admissionRate", type="decimal", precision=2, scale=0, nullable=true)
      */
     private $admissionRate;
 
