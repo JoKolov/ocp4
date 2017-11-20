@@ -80,9 +80,8 @@ class BookingController extends Controller
         }
 
         $invoice = $session->get('invoice');
-        $stripeAmount = $invoice->getAmount();
 
-        if ($stripeAmount <= 0)
+        if ($invoice->getAmount() <= 0)
         {
             $session->getFlashBag()->add('alert', [
                 'type'      => 'warning',
@@ -94,74 +93,36 @@ class BookingController extends Controller
         // Payment check
         if ($request->isMethod('POST'))
         {
-            try 
+            $stripeService = $this->get('ticketing.stripe');
+            $stripeCharge = $stripeService->chargeInvoice($invoice);
+
+            if (is_object($stripeCharge))
             {
-                // stripe payment validation process
-                \Stripe\Stripe::setApiKey($this->container->getParameter('stripe_secret_key'));
-                $stripeCustomer = \Stripe\Customer::create([
-                    'email'   => $invoice->getEmail(),
-                    'source'  => $request->request->get('stripeToken')
-                ]);
-                $stripeCharge = \Stripe\Charge::create([
-                    'customer'  => $stripeCustomer->id,
-                    'amount'    => $stripeAmount,
-                    'currency'  => $invoice->getCurrency()
-                ]);
-
-                // payment confirmed
-                $session->getFlashBag()->add('alert', [
-                    'type'      => 'success', 
-                    'content'   => "Paiement validé"
-                ]);
-
-                $payment = new Payment;
-                $payment->setStripeKey($request->request->get('stripeToken'));
-                //$invoice->setHashedKey(hash('sha256', 'LouvreTicket' . $payment->getStripeKey() . $invoice->getEmail()));
-                $invoice->generateHashedKey();
-
-                $invoice->setPayment($payment);
+                $invoice = $stripeCharge;
+                 // payment confirmed
                 $session->set('invoice', $invoice);
 
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($invoice);
                 $entityManager->flush();
 
-                // sending confirmation email
-                $this->get('ticketing.email')->sendBookingConfirmation($invoice);
-                
+                $session->getFlashBag()->add('alert', [
+                    'type'      => 'success', 
+                    'content'   => "Paiement validé"
+                ]);
+
                 // redirect to confirmation page
                 return $this->redirectToRoute('jni_ticketing_order_confirmation', ['key' => $invoice->getHashedKey()]);
+            }
 
-            } // error throw payment process
-            catch(\Stripe\Error\Card $e) 
-            {
-                $session->getFlashBag()->add('alert', [
-                    'type'      => 'danger',
-                    'content'   => "Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu. [rejected card]"
-                ]);
-            }
-            catch (\Stripe\Error\Base $e)
-            {
-                $session->getFlashBag()->add('alert', [
-                    'type'      => 'danger',
-                    'content'   => "Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu."
-                ]);
-            }
-            catch (Exception $e)
-            {
-                $session->getFlashBag()->add('alert', [
-                    'type'      => 'danger',
-                    'content'   => "Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu."
-                ]);
-            }
+            // error during stripe cherging process          
+            $session->getFlashBag()->add('alert', $stripeCharge);
         }
 
         // display view : basket summary + stripe form
         return $this->render('JNiTicketingBundle:Booking:payment.html.twig', [
             'invoice'           => $invoice,
-            'stripePublicKey'   => $this->container->getParameter('stripe_public_key'),
-            'amount'            => $stripeAmount / 100,
-            'stripeAmount'      => $stripeAmount
+            'stripePublicKey'   => $this->container->getParameter('stripe_public_key')
         ]);
     }
 
@@ -174,6 +135,8 @@ class BookingController extends Controller
         $session = $request->getSession();
         if ($session->has('invoice'))
         {
+            // sending confirmation email
+            $this->get('ticketing.email')->sendBookingConfirmation($session->get('invoice'));
             $session->remove('invoice');
         }
 
@@ -195,13 +158,8 @@ class BookingController extends Controller
         }
 
         // invoice found
-        // amount calculation
-        $amountCalculator = $this->get('ticketing.amount_calculator');
-        $amount = $amountCalculator->getInvoiceAmount($invoice);
-
         return $this->render('JNiTicketingBundle:Booking:confirmation.html.twig', [
-            'invoice'       => $invoice,
-            'amount'        => $amount
+            'invoice'       => $invoice
         ]);
     }
 

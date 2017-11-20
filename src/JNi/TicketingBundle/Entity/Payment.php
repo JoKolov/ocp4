@@ -35,6 +35,13 @@ class Payment
      */
     private $stripeKey;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="stripeId", type="integer")
+     */
+    private $stripeId;
+
 
     public function __construct()
     {
@@ -105,5 +112,28 @@ class Payment
     {
         return !is_null($this->getStripeKey());
     }
-}
 
+    /**
+     * Set stripeId
+     *
+     * @param integer $stripeId
+     *
+     * @return Payment
+     */
+    public function setStripeId($stripeId)
+    {
+        $this->stripeId = $stripeId;
+
+        return $this;
+    }
+
+    /**
+     * Get stripeId
+     *
+     * @return integer
+     */
+    public function getStripeId()
+    {
+        return $this->stripeId;
+    }
+}

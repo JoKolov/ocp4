@@ -85,7 +85,7 @@ class Invoice
      * //@Assert\Range(min=1, minMessage="Les enfants en bas âge doivent être accompagnés, veuillez réserver un billet adulte en plus")
      */
     private $amount;
-    
+
 
     /**
      * Constructor
@@ -347,6 +347,10 @@ class Invoice
     }
 
 
+    /**
+     * generate and set Invoice HAshedKey
+     * @return string hashedKey
+     */
     public function generateHashedKey()
     {
         $keyHead = ($this->getHalfDay()) ? "WH" : "WD";
@@ -354,5 +358,14 @@ class Invoice
         $keyContent = strtoupper($keyContent);
         $this->hashedKey = $keyHead . substr($keyContent, 0, 20);
         return $this->hashedKey;
+    }
+
+
+    /**
+     * @return string small description of invoice
+     */
+    public function getDescription()
+    {
+        return $this->getEmail() . " :: " . count($this->getVisitors()) . " admissions :: Musée du Louvre";
     }
 }
