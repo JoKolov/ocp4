@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use JNi\TicketingBundle\Form\InvoiceType;
 use JNi\TicketingBundle\Form\VisitorType;
+use JNi\TicketingBundle\EventListener\EmailConfirmationListener;
 
 
 class BookingController extends Controller
@@ -42,8 +43,7 @@ class BookingController extends Controller
     		if ($formInvoice->isValid())
     		{
                 // calcul total amount for this invoice
-                $amountCalculator = $this->get('ticketing.amount_calculator'); // requiring amountCalculator service
-                $amount = $amountCalculator->getInvoiceAmount($invoice);
+                $amount = $this->get('ticketing.amount_calculator')->getInvoiceAmount($invoice);
                 $invoice->setAmount($amount);
 
                 // joining invoice to each visitors
@@ -104,7 +104,7 @@ class BookingController extends Controller
                 return $this->redirectToRoute('jni_ticketing_order_confirmation', ['key' => $invoice->getHashedKey()]);
             }
 
-            // error during stripe cherging process          
+            // error during stripe charging process          
             $session->getFlashBag()->add('alert', $stripeCharge);
         }
 
@@ -124,8 +124,8 @@ class BookingController extends Controller
         $session = $request->getSession();
         if ($session->has('invoice'))
         {
-            // sending confirmation email
-            $this->get('ticketing.email')->sendBookingConfirmation($session->get('invoice'));
+            // preparing email confirmation sending listener
+            EmailConfirmationListener::setInvoice($session->get('invoice'));
             $session->remove('invoice');
         }
 
