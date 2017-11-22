@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 
-class BirthDateValidator extends ConstraintValidator
+class NotFutureDayValidator extends ConstraintValidator
 {
 	public function validate($date, Constraint $constraint)
 	{

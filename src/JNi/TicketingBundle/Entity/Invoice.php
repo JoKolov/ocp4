@@ -12,6 +12,8 @@ use JNi\TicketingBundle\Validator\NotCloseDay;
 use JNi\TicketingBundle\Validator\NotBlankDay;
 use JNi\TicketingBundle\Validator\ArrayNotEmpty;
 use JNi\TicketingBundle\Validator\HalfDayRequired;
+use JNi\TicketingBundle\Validator\NotBusyDay;
+use JNi\TicketingBundle\Validator\NotOnlyChildrens;
 
 /**
  * Invoice
@@ -55,6 +57,7 @@ class Invoice
      * @NotPastDay()
      * @NotCloseDay()
      * @NotBlankDay()
+     * @NotBusyDay()
      */
     private $date;
 
@@ -77,12 +80,12 @@ class Invoice
      * @ORM\OneToMany(targetEntity="JNi\TicketingBundle\Entity\Visitor", mappedBy="invoice", cascade={"persist"})
      * @ArrayNotEmpty(message="Au moins un visiteur doit être renseigné")
      * @Assert\Valid()
+     * @NotOnlyChildrens()
      */
     private $visitors;
 
     /**
      * @ORM\Column(name="amount", type="integer")
-     * //@Assert\Range(min=1, minMessage="Les enfants en bas âge doivent être accompagnés, veuillez réserver un billet adulte en plus")
      */
     private $amount;
 
@@ -244,7 +247,6 @@ class Invoice
      */
     public function addVisitor(\JNi\TicketingBundle\Entity\Visitor $visitor)
     {
-        $visitor->setInvoice($this);
         $this->visitors[] = $visitor;
 
         return $this;
@@ -367,5 +369,14 @@ class Invoice
     public function getDescription()
     {
         return $this->getEmail() . " :: " . count($this->getVisitors()) . " admissions :: Musée du Louvre";
+    }
+
+
+    public function setInvoiceForVisitors()
+    {
+        foreach ($this->getVisitors() as $visitor)
+        {
+            $visitor->setInvoice($this);
+        }
     }
 }

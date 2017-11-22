@@ -10,4 +10,39 @@ namespace JNi\TicketingBundle\Repository;
  */
 class InvoiceRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function countVisitorsForDay($invoice)
+	{
+		$queryBuilder = $this->createQueryBuilder('invoice');
+		$queryBuilder
+			->where('invoice.date = :day')
+				->setParameter('day', $invoice->getDate())
+		;
+		$invoices = $queryBuilder->getQuery()->getResult();
+
+		$nbVisitors = 0;
+		foreach ($invoices as $invoice)
+		{
+			$nbVisitors += count($invoice->getVisitors()); 
+		}
+
+		return $nbVisitors;
+	}
+
+	public function countVisitorsForDate($date)
+	{
+		$queryBuilder = $this->createQueryBuilder('invoice');
+		$queryBuilder
+			->where('invoice.date = :day')
+				->setParameter('day', $date)
+		;
+		$invoices = $queryBuilder->getQuery()->getResult();
+
+		$nbVisitors = 0;
+		foreach ($invoices as $invoice)
+		{
+			$nbVisitors += count($invoice->getVisitors()); 
+		}
+
+		return $nbVisitors;
+	}
 }

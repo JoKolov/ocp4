@@ -4,7 +4,7 @@ namespace JNi\TicketingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use JNi\TicketingBundle\Validator\BirthDate;
+use JNi\TicketingBundle\Validator\NotFutureDay;
 
 /**
  * Visitor
@@ -62,7 +62,7 @@ class Visitor
      *
      * @ORM\Column(name="birthDate", type="datetime")
      * @Assert\Date()
-     * @BirthDate()
+     * @NotFutureDay()
      */
     private $birthDate;
 

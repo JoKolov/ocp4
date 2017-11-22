@@ -46,11 +46,9 @@ class BookingController extends Controller
                 $amount = $amountCalculator->getInvoiceAmount($invoice);
                 $invoice->setAmount($amount);
 
-                foreach ($invoice->getVisitors() as $visitor)
-                {
-                    $visitor->setInvoice($invoice);
-                }
-
+                // joining invoice to each visitors
+                $invoice->setInvoiceForVisitors();
+               
                 // saving Invoice in Session for next step : Payment
     			$session->set('invoice', $invoice);
 
@@ -80,15 +78,6 @@ class BookingController extends Controller
         }
 
         $invoice = $session->get('invoice');
-
-        if ($invoice->getAmount() <= 0)
-        {
-            $session->getFlashBag()->add('alert', [
-                'type'      => 'warning',
-                'content'   => 'Au moins une entrée payante est requise pour réserver.'
-            ]);
-            return $this->redirectToRoute('jni_ticketing_home');
-        }
 
         // Payment check
         if ($request->isMethod('POST'))

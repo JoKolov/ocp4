@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class BirthDate extends Constraint
+class NotFutureDay extends Constraint
 {
   public $message = "Date non valide";
 }
