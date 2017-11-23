@@ -66,7 +66,8 @@ class Invoice
      *
      * @ORM\Column(name="halfDay", type="boolean")
      * @Assert\Type("bool")
-     * Other constraint : see isHalfDay() method
+     * //@HalfDayRequired() Deactivated to perform auto set
+     * please check method setHalfDay
      */
     private $halfDay;
 
@@ -280,23 +281,6 @@ class Invoice
     public function getCurrency()
     {
         return "EUR";
-    }
-
-
-    /**
-     * Constraint to check if HalfDay need to be TRUE
-     * @Assert\Callback
-     */
-    public function isHalfDayValid(ExecutionContextInterface $context)
-    {
-        $now = new \DateTime;
-        if (!$this->getHalfDay() and $this->getDate()->format("d/m/Y") == $now->format("d/m/Y") and $now->format("H") >= 14)
-        {
-            $context
-                ->buildViolation("A partir de 14h, le ticket demi-journée doit être sélectionné")
-                ->atPath('halfDay')
-                ->addViolation();
-        }
     }
 
     /**

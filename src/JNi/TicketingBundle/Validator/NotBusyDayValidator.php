@@ -10,19 +10,20 @@ use JNi\TicketingBundle\Service\InvoiceRepositoryService;
 class NotBusyDayValidator extends ConstraintValidator
 {
 	private $entityManager;
+	private $visitorLimit;
 
-	public function __construct(EntityManagerInterface $entityManager)
+	public function __construct(EntityManagerInterface $entityManager, $visitorLimit)
 	{
 		$this->entityManager = $entityManager;
+		$this->visitorLimit = $visitorLimit;
 	}
 
 	public function validate($date, Constraint $constraint)
 	{
-		// more than 1000 visitors
 		$nbVisitors = $this->entityManager
-			->getRepository('JNiTicketingBundle:Invoice')
-			->countVisitorsForDate($date);
-		if ($nbVisitors >= 5)
+			->getRepository('JNiTicketingBundle:Visitor')
+			->countForDay($date);
+		if ($nbVisitors >= $this->visitorLimit)
 		{
 			$this->context->addViolation($constraint->message);
 		}

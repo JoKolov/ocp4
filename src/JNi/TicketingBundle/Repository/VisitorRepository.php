@@ -10,4 +10,14 @@ namespace JNi\TicketingBundle\Repository;
  */
 class VisitorRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function countForDay($day)
+	{
+		return (int) $this->createQueryBuilder('v')
+			->leftJoin('v.invoice', 'i')
+			->where('i.date = :day')
+				->setParameter('day', $day)
+			->select('count(v)')
+			->getQuery()
+			->getSingleScalarResult();
+	}
 }
