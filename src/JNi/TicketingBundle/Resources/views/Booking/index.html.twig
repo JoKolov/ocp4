@@ -1,11 +1,22 @@
 
 {% extends "JNiTicketingBundle::ticketingLayout.html.twig" %}
 
-{% block title %}
- 	Billetterie - {{ parent() }}
+{% block thread %}
+	{{ parent() }}
 {% endblock %}
 
 {% block bodyContent %}
+	<div class="col-xs-12">
+		<h1>Musée du Louvre</h1>
+		<p>Tarifs du musée :
+			<ul class="list-group">
+				<li class="list-group-item"><span class="badge">16 €</span><b>Normal</b> : à partir de 12 ans</li>
+				<li class="list-group-item"><span class="badge">8 €</span><b>Enfant</b> : à partir de 4 ans (gratuit pour les moins de 4 ans)</li>
+				<li class="list-group-item"><span class="badge">12 €</span><b>Senior</b> : à partir de 60 ans</li>
+				<li class="list-group-item"><span class="badge">10 €</span><b>Réduit</b> : accordé dans certaines conditions (étudiant, employé du musée, d’un service du Ministère de la Culture, militaire…)</li>
+			</ul>
+		</p>
+	</div>
 	<h3>Réservation de billets d'entrée</h3>
 		
 		{% for message in app.session.flashbag.get('alert') %}
@@ -70,6 +81,4 @@
 {% endblock %}
 
 {% block asideContent %}
-	<p>prix des billets</p>
-	<p>Emplacement du panier</p>
 {% endblock %}

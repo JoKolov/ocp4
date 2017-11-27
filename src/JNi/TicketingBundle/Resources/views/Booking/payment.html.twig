@@ -1,10 +1,6 @@
 
 {% extends "JNiTicketingBundle::ticketingLayout.html.twig" %}
 
-{% block title %}
- 	Billetterie - {{ parent() }}
-{% endblock %}
-
 {% block bodyContent %}
 	<h3>Réservation de billets d'entrée</h3>
 
@@ -38,7 +34,7 @@
 			data-amount="{{ invoice.amount }}"
 			data-name="Musée du Louvre"
 			data-description="Billetterie"
-			data-image="/img/stripe-logo-03.jpg"
+			data-image="/img/stripe-logo-01.jpg"
 			data-locale="auto"
 			data-zip-code="true"
 		    data-currency="{{ invoice.currency }}"

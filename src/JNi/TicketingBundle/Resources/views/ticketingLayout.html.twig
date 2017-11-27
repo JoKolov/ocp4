@@ -1,21 +1,35 @@
 
 {% extends "JNiDefaultBundle::layout.html.twig" %}
 
+{% block background %}
+	<div class="background-ticketing">
+{% endblock %}
+
 {% block title %}
  	Billetterie - {{ parent() }}
 {% endblock %}
 
-{% block body %}
-	<div class="col-sm-9">
-		{% block bodyContent %}
-		{% endblock %}
+{% block nav %}
+	<div class="header-title">
+		<h1>Billetterie </h1>
 	</div>
 {% endblock %}
 
-{% block asideRight %}
-	<aside class="col-sm-3">
-		{% block asideContent %}
-			<p>-- Block aside --</p>
+{% block thread %}
+	<div class="col-xs-12 thread">
+		<p>
+			<a href="{{ path('jni_default_home') }}" class="thread-item" alt="Accueil du Musée du Louvre"><img src="/img/home_crumb.png" /><img src="/img/crumb-separator.png" class="thread-item-separator" /> Musée du Louvre</a>
+			<a href="{{ path('jni_ticketing_home') }}" class="thread-item"><img src="/img/crumb-separator.png" class="thread-item-separator" /> Réservation</a>
+			<a href="{{ path('jni_ticketing_payment') }}" class="thread-item"><img src="/img/crumb-separator.png" class="thread-item-separator" /> Paiement</a>
+			<a href="" class="thread-item"><img src="/img/crumb-separator.png" class="thread-item-separator" /> Confirmation</a>
+		</p>
+	</div>	
+{% endblock %}
+
+{% block body %}
+		{% block bodyContent %}
 		{% endblock %}
-	</aside>
+{% endblock %}
+
+{% block asideRight %}
 {% endblock %}

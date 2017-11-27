@@ -17,3 +17,4 @@
 /vendor/
 /web/bundles/
 /src/JNi/TicketingBundle/Resources/config/services.yml
+/web/files/datepicker/*

@@ -1,61 +1,243 @@
 /**
- * Bootstrap overload
+ * Colors
+ * //\\//\\//\\//\\//\\
+ * bleu ciel 	#23c0d7
+ * orange 		#c82d00
+ * gris header/footer 	#222
+ * gris titre 	#4e4e4e
+ * background bill. 	#331107
+ * DELETED --
+ * background-color: #171814;
+ * background-color: #272822;
+ */
+
+/**
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ * Bootstrap overrides
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
  */
 .row {
 	margin-left: 0px;
 	margin-right: 0px;
 }
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	.container {
+		max-width: 850px; /* original : 970px; */
+	}
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	.container {
+		max-width: 850px; /* original : 1170px; */
+	}
+}
 
-/**/
 
+/**
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ * Font styles
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ */
 body {
+	font-family: "Arial", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Georgia", sans-serif;
+}
+
+/**
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ * Differents Backgrounds
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ * Background Default
+ */
+.background-default {
+	min-height: 100vh;
 	background-image: url(/img/background-02.jpg);
-	
 	background-repeat: none;
 	background-size: 100%;/*
 	background-attachment: fixed;*/
 	background-repeat: no-repeat;
 	background-position: top;
-	/*background-color: #171814;*/
 	background-color: #fff;
+}
+/**
+ * Background Ticketing
+ */
+.background-ticketing {
+	min-height: 100vh;
+	background-color: #331107;
 }
 
 .page-container {
-	/*
-	background-color: #171814;
-	 */
 	color: #ccc;
 	border-radius: 0em 0em 1em 1em;
 }
 
 header {
-	/*
-	height: 15em;
-	background-image: url(/img/header-bg.jpg);
-	background-size: cover;
-	background-position: center;
-	background-repeat: none;
-	*/
-	background-color: #272822;
+	background-color: #222;
+	height: 105px;
+}
+
+
+/**
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ * User Nav
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ */
+.user-nav {
+	height: 24px;
+	font-size: 0.7em;
+	padding: 0;
+}
+
+.user-nav .nav-pills > li + li {
+	margin-left: 0;
+}
+
+.user-nav .nav li a {
+	padding: 3px;
+}
+
+.user-nav .nav-pills li a {
+	border-radius: 0px;
+	color: #fff;
+}
+
+.nav li a.user-nav-item-connexion {
+	background-color: #23c0d7;
+}
+.nav li a.user-nav-item-languages {
+	background-color: #c82d00;
+}
+
+.nav li a:hover.user-nav-item-languages {
+	background-color: #ff511e;
+}
+
+
+/**
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ * Logo Area and nav
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ */
+
+.logo-and-nav {
+	height: 55px;
+	display: flex;
+	color: #fff;
+	padding-left: 0px;
+}
+
+.home-logo {
+	margin-right: 1em;
 }
 
 nav {
-	background-color: #272822;
+	background-color: #222;
 }
 
+.nav-item {
+	text-transform: uppercase;
+	font-family: "Georgia", sans-serif;
+	font-size: 0.8em;
+}
+
+nav ul {
+	display: flex;
+}
+
+.logo-and-nav .nav li a {
+	color: #fff;
+	height: 100%;
+	padding: 6px;
+}
+
+.logo-and-nav .nav li a:hover, .logo-and-nav .nav li a:active {
+	color: #fff;
+	background-color: rgba(255,255,255,0.1);
+}
+
+.logo-and-nav nav a.nav-item-ticketing, .logo-and-nav nav a:visited.nav-item-ticketing {
+	background-color: #c82d00;
+}
+
+.logo-and-nav nav a:hover.nav-item-ticketing, .logo-and-nav nav a:active.nav-item-ticketing {
+	background-color: #ff511e;
+}
+
+
+/**
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ * HOME PAGE
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ */
+/**
+ * Carousel
+ */
+.block-carousel {
+	background-color: #000;
+}
+.carousel-img {
+	width: 100%;
+	max-height: 450px;
+}
 .block-body {
 	min-height: 20em;
 	background-color: #fff;
-	color: #222;
+	color: #000;
 	padding: 1em;
 }
-
 footer {
 	min-height: 5em;
-	background-color: #272822;
-	color: #666;
+	background-color: #222;
+	color: #fff;
 	padding: 1em;
-	border-radius: 0 0 1em 1em;
+	font-size: 0.7em;
+}
+/**
+ * Welcome Block 
+ */
+.welcome-block {
+	background-color: #222;
+	color: #fff;
+	padding: 1em;
+	margin: -1em -1em 1em -1em;
+}
+
+
+/**
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ * TICKETING BUNDLE
+ * //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+ */
+/**
+ * Thread
+ */
+.thread {
+	background-color: #c82d00;
+	font-size: 0.8em;
+	color: #fff;
+	max-height: 25px;
+	display: inline-block;
+	line-height: 25px;
+}
+
+.thread-item-separator {
+	margin-left: -0.5em;
+}
+
+.thread-item, .thread-item:visited {
+	color: #fff;
+	text-decoration: none;
+	margin-left: 1em;
+}
+
+.thread-item:hover, .thread-item:active {
+	color: #fff;
+	text-decoration: none;
 }
 
 
