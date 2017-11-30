@@ -1,0 +1,43 @@
+{# Booking form #}
+<div class="container-fluid">
+	<div class="row">
+
+		{{ form_start(formInvoice, {'attr': {'class': 'form-horizontal'}}) }}
+
+		{{ form_errors(formInvoice) }}
+
+		{# Field : date of visit #}		
+		<div class="form-group">
+			{{ form_label(formInvoice.date) }}
+			{{ form_errors(formInvoice.date) }}
+			{{ form_widget(formInvoice.date) }}
+		</div>
+
+		{# Field : times of visit #}
+		<div class="form-group">
+			{{ form_label(formInvoice.halfDay) }}
+			{{ form_errors(formInvoice.halfDay) }}
+			{{ form_widget(formInvoice.halfDay) }}
+		</div>
+
+		{# Field : email to send tickets #}
+		<div class="form-group">
+			{{ form_label(formInvoice.email) }}
+			{{ form_errors(formInvoice.email) }}
+			{{ form_widget(formInvoice.email) }}
+		</div>			
+
+		{# Form : subform Visitor #}
+		{{ form_row(formInvoice.visitors) }}
+		<div class="ticketing-home-title ticketing-form-title">
+			<a href="#" id="add_visitor" class="btn btn-default">Ajouter un visiteur</a>
+			{{ form_widget(formInvoice.valid, {'attr': {'class': 'btn btn-primary'}}) }}
+		</div>
+
+		{# Form : hidden fields #}
+		{{ form_rest(formInvoice) }}
+
+		{# End of booking form #}
+		{{ form_end(formInvoice) }}
+	</div>
+</div>

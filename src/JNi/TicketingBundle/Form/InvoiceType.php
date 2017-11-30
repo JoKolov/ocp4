@@ -17,7 +17,7 @@ class InvoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('date',       Type\DateType::class, ['label' => "Date de la visite"])
+            ->add('date',       Type\DateType::class, ['label' => "Date de la visite", 'widget' => 'single_text'])
             ->add('halfDay',    Type\CheckboxType::class, ['label' => "Entrée à partir de 14h", 'required' => false])
             ->add('email',      Type\EmailType::class, ['label' => "Email de confirmation"])
             ->add('visitors',    CollectionType::class, [

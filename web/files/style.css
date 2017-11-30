@@ -2,7 +2,7 @@
  * Colors
  * //\\//\\//\\//\\//\\
  * bleu ciel 	#23c0d7
- * orange 		#c82d00
+ * orange 		#c82d00 // light #ff511e;
  * gris header/footer 	#222
  * gris titre 	#4e4e4e
  * background bill. 	#331107
@@ -31,6 +31,17 @@
 	.container {
 		max-width: 850px; /* original : 1170px; */
 	}
+}
+.btn-primary {
+	color: #fff;
+	background-color: #c82d00;
+	border-color: #666;
+}
+
+.btn-primary:hover {
+	color: #fff;
+	background-color: #ff511e;
+	border-color: #666;
 }
 
 
@@ -127,6 +138,7 @@ header {
 .logo-and-nav {
 	height: 55px;
 	display: flex;
+	align-items: flex-end;
 	color: #fff;
 	padding-left: 0px;
 }
@@ -147,25 +159,34 @@ nav {
 
 nav ul {
 	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: nowrap;
 }
 
-.logo-and-nav .nav li a {
+.logo-and-nav .nav li a, .logo-and-nav .nav li a:visited {
 	color: #fff;
 	height: 100%;
 	padding: 6px;
 }
 
-.logo-and-nav .nav li a:hover, .logo-and-nav .nav li a:active {
-	color: #fff;
-	background-color: rgba(255,255,255,0.1);
+.logo-and-nav .nav:hover li a:not(.nav-item-ticketing) {
+	color: #808080;
 }
 
+.logo-and-nav .nav:hover li a:hover:not(.nav-item-ticketing), .logo-and-nav .nav li a:active {
+	color: #fff;
+	background-color: rgba(255,255,255,0);
+}
 .logo-and-nav nav a.nav-item-ticketing, .logo-and-nav nav a:visited.nav-item-ticketing {
-	background-color: #c82d00;
+	background-color: #ff0000;
 }
 
 .logo-and-nav nav a:hover.nav-item-ticketing, .logo-and-nav nav a:active.nav-item-ticketing {
-	background-color: #ff511e;
+	background-color: #fff;
+}
+.logo-and-nav nav a:hover span {
+	color: #ff0000;
 }
 
 
@@ -188,7 +209,11 @@ nav ul {
 	min-height: 20em;
 	background-color: #fff;
 	color: #000;
-	padding: 1em;
+	padding: 0em; /*1em*/
+	font-size: 0.9em;
+}
+.block-body p, .block-body label {
+	color: #4E4E4E;
 }
 footer {
 	min-height: 5em;
@@ -196,6 +221,7 @@ footer {
 	color: #fff;
 	padding: 1em;
 	font-size: 0.7em;
+	border-top: 2px solid #666;
 }
 /**
  * Welcome Block 
@@ -204,7 +230,6 @@ footer {
 	background-color: #222;
 	color: #fff;
 	padding: 1em;
-	margin: -1em -1em 1em -1em;
 }
 
 
@@ -241,10 +266,100 @@ footer {
 }
 
 
+.ticketing-home-form {
+	padding-right: 0;
+	padding-left: 0;
+}
+.ticketing-home-title {
+	background-color: #4e4e4e;
+	padding: 0.1em 1em 0.1em 1em;
+	color: #fff;
+	min-height: 3.6em;
+	display: flex;
+	align-items: center;
+}
+.title-underline {
+	border-bottom: 2px solid #ccc;
+}
+.ticketing-home-basket-title {
+	background-color: #c82d00;
+}
+.ticketing-home-basket {
+	padding: 1em;
+	background-color: #c82d00;
+	font-size: 0.8em;
+}
+.ticketing-home-basket p {
+	background-color: #fff;
+	color: #000;
+}
+.ticketing-home-info {
+	font-size: 0.8em;
+	padding: 1em;
+	color: #fff;
+}
+.ticketing-home-info p {
+	color: #fff;
+}
+.ticketing-home-info .list-group {
+	margin-bottom: 0;
+}
+.ticketing-home-info li b {
+	font-size: 1em;
+}
+.ticketing-home-info li span {
+	background-color: #4e4e4e;
+	color: #fff;
+}
+.ticketing-home-info li {
+	background-color: #222;
+	border: 0;
+	padding: 0.5em 0;
+}
+.ticketing-home-info ul li:not(:first-child) {
+	border-top: 1px dashed #666;
+}
+
 /**
- * Formulaires
+ * Forms
  */
 .form-horizontal .form-group {
 	margin-left: 0px;
 	margin-right: 0px;
+}
+.ticketing-form {
+	padding-top: 1em;
+}
+.ticketing-form .form-group {
+	margin-bottom: 0;
+}
+.ticketing-form .btn, .btn {
+	/*margin-bottom: 1em;*/
+	margin: 0.2em 0.2em 0.2em 0;
+	padding: 3px 12px;
+	font-weight: bold;
+	font-size: 0.9em;
+}
+.ticketing-form-title {
+	margin-top: 1em;
+	margin-right: -15px;
+	margin-left: -15px;
+}
+/**
+ * Aside
+ */
+.ticketing-home-aside {
+	padding-right: 0;
+	padding-left: 0;
+	background-color: #222;
+}
+
+
+.ticketing-content {
+	padding: 2em;
+}
+
+.ticketing-payment-title {
+	margin-left: -2em;
+	margin-right: -2em;
 }
