@@ -14,28 +14,50 @@ class AmountCalculatorTest extends TestCase
 {
 	/**
 	 * TEST
+	 * single visitor amount
 	 */
 	public function testGetInvoiceAmount()
 	{
-		// museum visitors
 		$visitor = new Visitor();		
 		$visitor->setBirthDate(new \DateTime("1986-06-24"));
+		$amount = 1600;
 
-		// invoice creation
 		$invoice = new Invoice();
-		$invoice->setDate(new \DateTime("2018-01-04"));
 		$invoice->addVisitor($visitor);
 
-		// amount calculation
 		$admissionRateRepository = $this->getAdmissionRateRepositoryMock();
 		$amountCalculator = new AmountCalculator($admissionRateRepository);
 
-		$amount = $amountCalculator->getInvoiceAmount($invoice);
+		// assertion : check amount value is correct
+		$this->assertEquals($amount, $amountCalculator->getInvoiceAmount($invoice));
+	}
 
-		$normalAmount = 1600;
+	/**
+	 * TEST
+	 * familly visitor amount
+	 */
+	public function testFamillyAmountValue()
+	{
+		$visitors = [
+			$this->getVisitor("1986-06-24", false), // 1600
+			$this->getVisitor("1986-12-13", true),	// 1000
+			$this->getVisitor("2011-10-04", false),	//  800
+			$this->getVisitor("2011-10-11", true),	//  800
+			$this->getVisitor("1951-10-10", false), // 1200
+			$this->getVisitor("1952-07-26", true),	// 1000
+			$this->getVisitor("2017-11-01", false)	//    0
+		]; // 						Total Amount 	 = 6400
+		$amount = 6400;
 
-		// asserting amount value
-		$this->assertEquals($normalAmount, $amount);
+		$invoice = $this->getInvoice($visitors);
+		$admissionRateRepository = $this->getAdmissionRateRepositoryMock();
+		$amountCalculator = new AmountCalculator($admissionRateRepository);
+
+		// assertion : check amount value is correct
+		$this->assertEquals(
+			$amount,
+			$amountCalculator->getInvoiceAmount($invoice)
+		);
 	}
 
 
@@ -78,5 +100,33 @@ class AmountCalculatorTest extends TestCase
 		//var_dump($admissionRateRepository->getListAdmissionRatesByAgeDESC("reduced")); die;
 
 		return $admissionRateRepository;
+	}
+
+	/**
+	 * @param  string  $birthDate   Visitor birth date : yyyy-mm-dd
+	 * @param  boolean $reducedRate Require admission reduced rate
+	 * @return Visitor              Instance of Visitor
+	 */
+	private function getVisitor($birthDate, $reducedRate = false)
+	{
+		$visitor = new Visitor();
+		return $visitor
+			->setBirthDate(new \DateTime($birthDate))
+			->setReducedRate($reducedRate)
+		;
+	}
+
+	/**
+	 * @param  array  $visitors List of Intances of Visitor
+	 * @return Invoice          Instance of Invoice
+	 */
+	private function getInvoice($visitors = [])
+	{
+		$invoice = new Invoice();
+		foreach ($visitors as $visitor)
+		{
+			$invoice->addVisitor($visitor);
+		}
+		return $invoice;
 	}
 }
