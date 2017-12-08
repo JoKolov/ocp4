@@ -1,75 +1,67 @@
 
 {% extends "JNiTicketingBundle::ticketingLayout.html.twig" %}
 
-{% block title %}
- 	Billetterie - {{ parent() }}
+{% block thread %}
+	{{ parent() }}
 {% endblock %}
 
 {% block bodyContent %}
-	<h3>Réservation de billets d'entrée</h3>
-		
+	<div class="col-sm-12">
+		<h3>Musée du Louvre</h3>
+		<p>
+			Le musée est ouvert tous les jours sauf le mardi, le 1er mai, le 1er novembre et le 25 décembre. Entrée libre tous les dimanches et les jours fériés. 
+			Il existe 2 types de billets : le billet « Journée » et le billet « Demi-journée » qui permet de rentrer qu’à partir de 14h00. <br />
+			Billet valable seulement le jour sélectionné.
+		</p>
+	</div>
+
+	<div class="col-sm-8 ticketing-home-form">
+		<div class="ticketing-home-title title-underline">
+			<h4>Réservation de billets d'entrée</h4>
+		</div>
+
 		{% for message in app.session.flashbag.get('alert') %}
 			<p class="alert alert-{{ message.type }}">{{ message.content }}</p>
 		{% endfor %}
-
 		{# Booking form #}
-		{{ form_start(formInvoice, {'attr': {'class': 'form-horizontal'}}) }}
-
-		{{ form_errors(formInvoice) }}
-
-		{# Field : date of visit #}
-		<div class="form-group">
-			<div class="col-sm-2">
-				<p class="control-label">Date de la visite</p>
-			</div>
-			{{ form_errors(formInvoice.date) }}
-			<div class="col-sm-10">
-				{{ form_widget(formInvoice.date) }}
-			</div>
+		<div class="ticketing-form">
+			{{ include("JNiTicketingBundle:Form:invoice.html.twig") }}
 		</div>
+	</div>
 
-		{# Field : times of visit #}
-		<div class="form-group">
-			<div class="col-sm-2">
-				<p class="control-label">Demi-journée</p>
-			</div>
-			{{ form_errors(formInvoice.halfDay) }}
-			<div class="col-sm-10">
-				{{ form_widget(formInvoice.halfDay) }}
-			</div>
+	<div class="col-sm-4 ticketing-home-aside">
+		<div class="ticketing-home-title ticketing-home-basket-title title-underline">
+			<h4><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Panier</h4>
 		</div>
-
-		{# Field : email to send tickets #}
-		<div class="form-group">
-			<div class="col-sm-2">
-				<p class="control-label">Email de contact</p>
-			</div>
-			{{ form_errors(formInvoice.email) }}
-			<div class="col-sm-10">
-				{{ form_widget(formInvoice.email) }}
-			</div>
-		</div>			
-
-		{# Form : subform Visitor #}
-		<div class="col-xs-12">
-			{{ form_row(formInvoice.visitors) }}
-			<a href="#" id="add_visitor" class="btn btn-default">Ajouter un visiteur</a>
+		<div class="ticketing-home-basket">
+			<p class="text-center">panier vide</p>
 		</div>
-
-		{# Form : validation button #}
-		<div class="col-xs-12">
-			<p></p>
-			{{ form_widget(formInvoice.valid, {'attr': {'class': 'btn btn-primary'}}) }}
-		</div>	
-
-		{# Form : hidden fields #}
-		{{ form_rest(formInvoice) }}
-
-		{# End of booking form #}
-		{{ form_end(formInvoice) }}
+		<div class="ticketing-home-title">
+			<h4>Tarifs du musée</h4>
+		</div>
+		<div class="ticketing-home-info">
+			<ul class="list-group">
+				<li class="list-group-item"><span class="badge">16 €</span><b>Normal</b> : à partir de 12 ans</li>
+				<li class="list-group-item"><span class="badge">8 €</span><b>Enfant</b> : à partir de 4 ans (*)</li>
+				<li class="list-group-item"><span class="badge">12 €</span><b>Senior</b> : à partir de 60 ans</li>
+				<li class="list-group-item"><span class="badge">10 €</span><b>Réduit</b> : sous conditions (étudiant, employé du musée, d’un service du Ministère de la Culture, militaire…)</li>
+				<li class="list-group-item"><em>* gratuit pour les enfants de moins de 4 ans</em></li>
+			</ul>
+		</div>
+		<div class="ticketing-home-title">
+			<h4>Informations</h4>
+		</div>
+		<div class="ticketing-home-info">
+			<p>
+				Le billet acheté en ligne est horodaté et nominatif, un document d’identité peut être demandé.
+				Il est valable exclusivement pour la prestation, la date et à compter de l'heure mentionnée. Il ne constitue pas un coupe file mais permet un accès à la pyramide du Louvre dans la demi-heure de l'horaire indiqué. En cas de non-respect de ce créneau horaire, le porteur du billet print@home est soumis aux mêmes conditions d'accès et d'attente que les visiteurs sans billet.
+			</p>
+			<p>
+				Les conditions d’accès des visiteurs munis d’un e-ticket s’appliquent également aux visiteurs bénéficiant d'un accès libre qui les accompagnent.
+			</p>
+		</div>
+	</div>
 {% endblock %}
 
 {% block asideContent %}
-	<p>prix des billets</p>
-	<p>Emplacement du panier</p>
 {% endblock %}

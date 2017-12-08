@@ -33,7 +33,8 @@ class AmountCalculator
         	"reduced"	=>	$this->admissionRateRepository->getListAdmissionRatesByAgeDESC("reduced")
         ];
 
-        $rateCoeff = ($invoice->getHalfDay()) ? 0.5 : 1;
+        //$rateCoeff = ($invoice->getHalfDay()) ? 0.5 : 1;
+        $rateCoeff = 1;
 		$amount = 0;
 		foreach ($invoice->getVisitors() as $visitor)
 		{

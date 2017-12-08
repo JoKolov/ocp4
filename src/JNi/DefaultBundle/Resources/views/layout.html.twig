@@ -17,27 +17,43 @@
   </head>
 
   <body>
+    {% block background %}
+      <div class="background-default">
+    {% endblock %}
 
     <div class="container page-container">
 
-      {% block header %}
-        <header class="row">
-          <div class="col-xs-12">
-            <img src="/img/logo-h50.png" class="img-responsive" alt="Musée du Louvre" />
-          </div>
-        </header>
+      <header class="row">
+        <div class="col-xs-12 user-nav">
+          {% block userNav %}
+            <ul class="nav nav-pills pull-right">
+              <li role="presentation"><a href="" class="user-nav-item-connexion">Connexion</a></li>
+              <li role="presentation"><a href="" class="user-nav-item-languages">Select language</a></li>
+            </ul>
+          {% endblock %}
+        </div>
+        <div class="col-xs-12 logo-and-nav">
+          <a href="{{ path('jni_default_home') }}" class="home-logo"><img src="/img/logo-183x55.png" class="img-responsive" alt="Musée du Louvre" /></a>
+          {% block nav %}
+            <nav class="">
+              <div class="">
+                <ul class="nav nav-pills">
+                  <li role="presentation"><a href="{{ path('jni_default_home') }}" class="nav-item">Informations pratiques</a></li>
+                  <li role="presentation"><a href="{{ path('jni_default_home') }}" class="nav-item">Visites & Activités</a></li>
+                  <li role="presentation"><a href="{{ path('jni_default_home') }}" class="nav-item">Expositions & Actualités</a></li>
+                  <li role="presentation"><a href="{{ path('jni_default_home') }}" class="nav-item">Oeuvres & Palais</a></li>
+                  <li role="presentation"><a href="{{ path('jni_default_home') }}" class="nav-item">Art & Education</a></li>
+                  <li role="presentation"><a href="{{ path('jni_ticketing_home') }}" class="nav-item nav-item-ticketing"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span></a></li>
+                </ul>  
+              </div>      
+            </nav>
+          {% endblock %}
+        </div>
+      </header>
+      {% block thread %}
       {% endblock %}
 
-
-      {% block nav %}
-        <nav class="row">
-          <div class="col-xs-12">
-            <ul class="nav nav-pills">
-              <li role="presentation"><a href="{{ path('jni_default_home') }}">Accueil</a></li>
-              <li role="presentation"><a href="{{ path('jni_ticketing_home') }}">Billetterie</a></li>
-            </ul>  
-          </div>      
-        </nav>
+      {% block carousel %}
       {% endblock %}
 
       <section class="row block-body">
@@ -71,5 +87,6 @@
       <script src="/files/visitorFormManager.js"></script>
     {% endblock %}
 
+    </div><!-- end of background div -->
   </body>
 </html>

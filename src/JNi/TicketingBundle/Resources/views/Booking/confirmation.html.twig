@@ -1,32 +1,46 @@
 
 {% extends "JNiTicketingBundle::ticketingLayout.html.twig" %}
 
-{% block title %}
- 	Billetterie - {{ parent() }}
-{% endblock %}
-
 {% block bodyContent %}
-	<h3>Réservation de billets d'entrée</h3>
+	<div class="col-sm-12">
+		<h3>Confirmation de réservation</h3>
+		
+		{% for message in app.session.flashbag.get('alert') %}
+			<p class="alert alert-{{ message.type }}">{{ message.content }}</p>
+		{% endfor %}
 
-	{% for message in app.session.flashbag.get('alert') %}
-		<p class="alert alert-{{ message.type }}">{{ message.content }}</p>
-	{% endfor %}
+		<p>
+			Votre billet a été envoyé à votre adresse email : {{ invoice.email }}. 
+			Imprimez-le et présentez-le à l'entrée du musée le jour de votre visite. <br />
+			Merci pour votre visite.
+		</p>
+	</div>
 
-	{% if invoice.payment.isvalid %}
-		<div class="well">
-			<p>Jour de la visite : {{ invoice.date|date('d/m/Y') }}</p>
-			<p>Email de validation : {{ invoice.email }}</p>
-			<p>Visiteurs enregistrés :</p>
-			<ul>
-			{% for visitor in invoice.visitors %}
-				<li>{{ visitor.fullName }}, {{ visitor.country }}, {{ visitor.age }} ans</li>
-			{% endfor %}
-			</ul>
-			<p>Total de la commande : {{ invoice.amountwithcurrency }}</p>
-			<p>STATUT : validé</p>
+	<div class="col-sm-12 ticketing-home-form">
+		<div class="ticketing-home-title title-underline">
+			<h4>Réservation</h4>
 		</div>
-	{% else %}
-		<p>aucune réservation enregistrée</p>
-	{% endif %}
 
+		{# Booking form #}
+		<div class="ticketing-content">
+
+			{% if invoice.payment.isvalid %}
+				<div class="well">
+					<p>Jour de la visite : {{ invoice.date|date('d/m/Y') }}</p>
+					<p>Email de validation : {{ invoice.email }}</p>
+					<p>Visiteurs enregistrés :</p>
+					<ul>
+					{% for visitor in invoice.visitors %}
+						<li>{{ visitor.fullName }}, {{ visitor.country }}, {{ visitor.age }} ans</li>
+					{% endfor %}
+					</ul>
+					<p>Total de la commande : {{ invoice.amountwithcurrency }}</p>
+					<p>STATUT : validé</p>
+				</div>
+			{% else %}
+				<p>aucune réservation enregistrée</p>
+			{% endif %}
+
+		</div>
+	</div>
 {% endblock %}

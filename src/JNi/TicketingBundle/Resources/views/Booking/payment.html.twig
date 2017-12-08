@@ -1,51 +1,77 @@
 
 {% extends "JNiTicketingBundle::ticketingLayout.html.twig" %}
 
-{% block title %}
- 	Billetterie - {{ parent() }}
-{% endblock %}
-
 {% block bodyContent %}
-	<h3>Réservation de billets d'entrée</h3>
+	<div class="col-sm-12">
+		<h3>Votre panier</h3>
 
-	{% for message in app.session.flashbag.get('alert') %}
-		<p class="alert alert-{{ message.type }}">{{ message.content }}</p>
-		<p>Retentez le paiement ou contactez-nous.</p>
-	{% endfor %}
+		{% for message in app.session.flashbag.get('alert') %}
+			<p class="alert alert-{{ message.type }}">{{ message.content }}</p>
+		{% endfor %}
 
-	{% if invoice %}
-		<div class="well">
-			<p>Jour de la visite : {{ invoice.date|date('d/m/Y') }} ( {{ invoice.ticketDayType }} )</p>
-			<p>Email de confirmation : {{ invoice.email }}</p>
-			<p>Visiteurs enregistrés :</p>
-			<ul>
-			{% for visitor in invoice.visitors %}
-				<li>{{ visitor.fullName }}, {{ visitor.country }}, {{ visitor.age }} ans</li>
-			{% endfor %}
-			</ul>
-			<p>Total de la commande : {{ invoice.amountWithCurrency }}</p>
+		<p>
+			Merci de bien vérifier que le contenu de votre réservation (date, horaire, conditions de gratuité) correspond à votre commande. <br />
+			Retourner à l'étape précédente si des modifications sont nécessaires.
+		</p>
+	</div>
+
+	<div class="col-sm-12 ticketing-home-form">
+		<div class="ticketing-home-title title-underline">
+			<h4>1. Vérifiez votre commande</h4>
 		</div>
-	{% else %}
-		<p>aucune réservation enregistrée</p>
-	{% endif %}
-	
 
-	{# formulaire stripe #}
-	<form action="#" name="stripeForm" method="POST">
-		<script
-			src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-			data-key="{{ stripePublicKey }}"
-			data-amount="{{ invoice.amount }}"
-			data-name="Musée du Louvre"
-			data-description="Billetterie"
-			data-image="/img/stripe-logo-03.jpg"
-			data-locale="auto"
-			data-zip-code="true"
-		    data-currency="{{ invoice.currency }}"
-		    data-email="{{ invoice.email }}"
-		    data-label="Payer par CB"
-		    data-allowRememberMe="false">
-		</script>
-	</form>
+		{# Booking form #}
+		<div class="ticketing-content">
+
+			{% if invoice %}
+				<div class="">
+					<p>
+						Musée du Louvre <br />
+						Date de visite : {{ invoice.date|date('d/m/Y') }}
+					</p>
+					{% for visitor in invoice.visitors %}
+						<p class="ticketing-payment-visitor">
+							{{ visitor.fullName }}, {{ visitor.country }}, {{ visitor.age }} ans <br />
+							Billet {{ invoice.ticketDayType }}
+						</p>
+					{% endfor %}
+
+					<p>
+						Mode de retrait des billets : Billet électronique <br />
+						Email de confirmation : {{ invoice.email }}
+					</p>
+					<p class="text-right">
+						Montant de votre commande : {{ invoice.amountWithCurrency }}
+					</p>
+			{% else %}
+				<p>Votre panier est vide.</p>
+				<p>Retrounez à l'étape précédente pour Créer une nouvelle commande.</p>
+			{% endif %}
+
+		</div>
+		<div class="ticketing-home-title ticketing-payment-title">
+			<h4>2.&nbsp;</h4>
+			<a href="{{ path('jni_ticketing_home') }}" id="previous" class="btn btn-default">Modifier la commande</a> 
+			<h4>&nbsp;ou&nbsp;</h4>
+			{# formulaire stripe #}
+			<form action="#" name="stripeForm" method="POST">
+				<script
+					src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+					data-key="{{ stripePublicKey }}"
+					data-amount="{{ invoice.amount }}"
+					data-name="Musée du Louvre"
+					data-description="Billetterie"
+					data-image="/img/stripe-logo-01.jpg"
+					data-locale="auto"
+					data-zip-code="true"
+				    data-currency="{{ invoice.currency }}"
+				    data-email="{{ invoice.email }}"
+				    data-label="Payer par CB"
+				    data-allowRememberMe="false">
+				</script>
+			</form>
+		</div>
+
+	</div>
 
 {% endblock %}
