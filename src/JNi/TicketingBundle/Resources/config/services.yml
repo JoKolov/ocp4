@@ -1,0 +1,34 @@
+services:
+    ticketing.amount_calculator:
+        class: JNi\TicketingBundle\Service\Amount\AmountCalculator
+        arguments:
+          - "@=service('doctrine.orm.entity_manager').getRepository('JNiTicketingBundle:AdmissionRate')"
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    ticketing.email:
+        class: JNi\TicketingBundle\Service\Email\Email
+        arguments:
+          - "@mailer"
+          - "@router"
+          - "@templating"
+        scope: request
+#
+    ticketing.payment:
+        class: JNi\TicketingBundle\Service\Payment\PaymentService
+        arguments:
+          - "%stripe_secret_key%"
+          - "%ticketing_payment_error_code%"
+#
+    ticketing.validator.not_busy_day:
+        class: JNi\TicketingBundle\Validator\NotBusyDayValidator
+        arguments:
+          - "@doctrine.orm.entity_manager"
+          - "%ticketing_visitor_limit%"
+        tags:
+          - { name: validator.constraint_validator, alias: ticketing.not_busy_day }
+#
+    ticketing.email.listener:
+        class: JNi\TicketingBundle\EventListener\EmailConfirmationListener
+        arguments:
+          - "@ticketing.email"
+        tags:
+          - { name: kernel.event_listener, event: kernel.terminate, method: sendEmail }

@@ -31,9 +31,9 @@ class Payment
     /**
      * @var string
      *
-     * @ORM\Column(name="stripeKey", type="string", length=255)
+     * @ORM\Column(name="stripeToken", type="string", length=255)
      */
-    private $stripeKey;
+    private $stripeToken;
 
     /**
      * @var string
@@ -84,33 +84,33 @@ class Payment
     }
 
     /**
-     * Set stripeKey
+     * Set stripeToken
      *
-     * @param string $stripeKey
+     * @param string $stripeToken
      *
      * @return Payment
      */
-    public function setStripeKey($stripeKey)
+    public function setStripeToken($stripeToken)
     {
-        $this->stripeKey = $stripeKey;
+        $this->stripeToken = $stripeToken;
 
         return $this;
     }
 
     /**
-     * Get stripeKey
+     * Get stripeToken
      *
      * @return string
      */
-    public function getStripeKey()
+    public function getStripeToken()
     {
-        return $this->stripeKey;
+        return $this->stripeToken;
     }
 
 
     public function isValid()
     {
-        return !is_null($this->getStripeKey());
+        return !is_null($this->getStripeToken());
     }
 
     /**

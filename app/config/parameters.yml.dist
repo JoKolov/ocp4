@@ -17,3 +17,7 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+    stripe_public_key: your_stripe_public_key
+    stripe_secret_key: your_stripe_secret_key
+    ticketing_visitor_limit: 1000
+    ticketing_payment_error_code: 10019

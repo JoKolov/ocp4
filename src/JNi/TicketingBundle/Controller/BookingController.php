@@ -82,11 +82,11 @@ class BookingController extends Controller
         // Payment check
         if ($request->isMethod('POST'))
         {
-            $stripeService = $this->get('ticketing.stripe');
-            $stripeCharge = $stripeService->chargeInvoice($invoice);
-
-            if (is_object($stripeCharge))
+            try
             {
+                $stripeService = $this->get('ticketing.payment');
+                $stripeCharge = $stripeService->chargeInvoice($invoice, $request->request->get('stripeToken'));
+
                 $invoice = $stripeCharge;
                  // payment confirmed
                 $session->set('invoice', $invoice);
@@ -103,9 +103,20 @@ class BookingController extends Controller
                 // redirect to confirmation page
                 return $this->redirectToRoute('jni_ticketing_order_confirmation', ['key' => $invoice->getHashedKey()]);
             }
+            catch (\Exception $e)
+            {
+                // error during stripe charging process
+                if ($e->getCode() != $this->container->getParameter('ticketing_payment_error_code'))
+                {
+                    throw $e;
+                }
 
-            // error during stripe charging process          
-            $session->getFlashBag()->add('alert', $stripeCharge);
+                $errorMessage = [
+                    'type'      => 'danger',
+                    'content'   => $e->getMessage()
+                ];
+                $session->getFlashBag()->add('alert', $errorMessage);
+            }
         }
 
         // display view : basket summary + stripe form
