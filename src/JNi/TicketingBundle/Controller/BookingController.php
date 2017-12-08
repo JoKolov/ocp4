@@ -135,8 +135,9 @@ class BookingController extends Controller
         $session = $request->getSession();
         if ($session->has('invoice'))
         {
-            // preparing email confirmation sending listener
-            EmailConfirmationListener::setInvoice($session->get('invoice'));
+            // send email confirmation
+            $emailService = $this->get('ticketing.email');
+            $emailService->sendBookingConfirmation($session->get('invoice'));
             $session->remove('invoice');
         }
 

@@ -25,10 +25,3 @@ services:
           - "%ticketing_visitor_limit%"
         tags:
           - { name: validator.constraint_validator, alias: ticketing.not_busy_day }
-#
-    ticketing.email.listener:
-        class: JNi\TicketingBundle\EventListener\EmailConfirmationListener
-        arguments:
-          - "@ticketing.email"
-        tags:
-          - { name: kernel.event_listener, event: kernel.terminate, method: sendEmail }

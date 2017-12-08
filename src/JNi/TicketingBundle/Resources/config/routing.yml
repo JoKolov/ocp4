@@ -1,5 +1,5 @@
 jni_ticketing_order_confirmation:
-    path: /transaction/success/{key}
+    path: /ticket/{key}
     defaults: { _controller: JNiTicketingBundle:Booking:confirmation }
 
 jni_ticketing_home:
