@@ -21,7 +21,7 @@ class LoadAdmissionRate implements FixtureInterface
 			],
 			'enfant'	=> [
 				'rate'					=> 800,
-				'description'			=> "à partir de 4 ans et jusqu’à 12 ans",
+				'description'			=> "à partir de 4 ans",
 				'rateType' 				=> "standard",
 				'minimumAge' 			=> 4
 			],
@@ -39,7 +39,7 @@ class LoadAdmissionRate implements FixtureInterface
 			],
 			"réduit"	=> [
 				'rate'					=> 1000,
-				'description'			=> "accordé dans certaines conditions (étudiant, employé du musée, d’un service du Ministère de la Culture, militaire…)",
+				'description'			=> "sous conditions (étudiant, employé du musée, d’un service du Ministère de la Culture, militaire…)",
 				'rateType' 				=> "reduced",
 				'minimumAge' 			=> 12
 			]

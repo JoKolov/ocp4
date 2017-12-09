@@ -1,6 +1,7 @@
 /.web-server-pid
 /app/config/parameters.yml
-/app/config/xsave-parameters.yml
+/app/config/parameters-save.yml
+/app/config/parameters-online.yml
 /build/
 /phpunit.xml
 /var/*

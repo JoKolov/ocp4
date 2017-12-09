@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
-  	<img src="http://ocp4/img/logo-183x55.png" />
+  	<img src="http://ocp4.nicoloff.fr/img/logo-183x55.png" />
   	<p>Musée du Louvre - Paris <br /></p>
   	<h1>Confirmation de réservation</h1>
 	<p>Jour de la visite : {{ invoice.date|date('d/m/Y') }}</p>
@@ -17,7 +17,7 @@
 	{% endfor %}
 	</ul>
 	<p>Code de réservation : {{ invoice.getHashedKey }} <br />
-		<a href="http://ocp4{{ urlConfirmation }}">Lien vers la page de confirmation</a></p>
+		<a href="http://ocp4.nicoloff.fr{{ urlConfirmation }}">Lien vers la page de confirmation</a></p>
 	<p>Nous vous souhaitons une agréable visite.</p>
 	<p>Bien cordialement. <br />
 	L'équipe du musée du Louvre</p>

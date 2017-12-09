@@ -363,4 +363,9 @@ class Invoice
             $visitor->setInvoice($this);
         }
     }
+
+    public function countVisitors()
+    {
+        return count($this->getVisitors());
+    }
 }

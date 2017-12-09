@@ -265,7 +265,9 @@ footer {
 	text-decoration: none;
 }
 
-
+/**
+ * 
+ */
 .ticketing-home-form {
 	padding-right: 0;
 	padding-left: 0;
@@ -277,6 +279,9 @@ footer {
 	min-height: 3.6em;
 	display: flex;
 	align-items: center;
+}
+.ticketing-home-title h4 {
+	font-family: "Arial", sans-serif;
 }
 .title-underline {
 	border-bottom: 2px solid #ccc;
@@ -359,7 +364,23 @@ footer {
 	padding: 2em;
 }
 
-.ticketing-payment-title {
-	margin-left: -2em;
-	margin-right: -2em;
+.ticketing-invoice {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.ticketing-invoice, .ticketing-invoice .list-group, .ticketing-invoice .list-group-item {
+	border: none;
+}
+.ticketing-invoice .list-group-item {
+	padding-bottom: 5;
+	padding-top: 5;
+}
+
+.ticketing-invoice .list-group-item + .border-top-solid {
+	border-top: 1px solid #ccc;
+}
+
+.ticketing-invoice .list-group-item + .border-top-dashed {
+	border-top: 1px dashed #ccc;
 }

@@ -24,32 +24,43 @@
 		<div class="ticketing-content">
 
 			{% if invoice %}
-				<div class="">
-					<p>
+				<div class="panel panel-default ticketing-invoice">
+					<ul class="list-group">
+					<li class="list-group-item">
 						Musée du Louvre <br />
-						Date de visite : {{ invoice.date|date('d/m/Y') }}
-					</p>
-					{% for visitor in invoice.visitors %}
-						<p class="ticketing-payment-visitor">
-							{{ visitor.fullName }}, {{ visitor.country }}, {{ visitor.age }} ans <br />
-							Billet {{ invoice.ticketDayType }}
-						</p>
-					{% endfor %}
+						Date de visite : {{ invoice.date|date('d/m/Y') }} <br />
+						Validité : {{ invoice.ticketDayType }}
+					</li>
+					<li class="list-group-item border-top-solid">
+						Visiteurs: x {{ invoice.countVisitors }}
+						<ul class="list-group">
+						{% for visitor in invoice.visitors %}
+							<li class="list-group-item" class="ticketing-payment-visitor">
+								<div class="pull-right ticket-rate">1</div>
+								{{ visitor.fullName }}, {{ visitor.age }} ans
+							</li>
+						{% endfor %}
+						</ul>				
+					</li>
 
-					<p>
-						Mode de retrait des billets : Billet électronique <br />
+					<li class="list-group-item border-top-solid">
+						Mode de retrait des billets : <div class="pull-right">Billet électronique</div>
+					</li>
+					<li class="list-group-item">
 						Email de confirmation : {{ invoice.email }}
-					</p>
-					<p class="text-right">
-						Montant de votre commande : {{ invoice.amountWithCurrency }}
-					</p>
+					</li>
+					<li class="list-group-item  border-top-dashed">
+						<span class="pull-right">{{ invoice.amountWithCurrency }}</span>
+						Montant de votre commande 
+					</li>
+					</ul>
+				</div>
 			{% else %}
 				<p>Votre panier est vide.</p>
 				<p>Retrounez à l'étape précédente pour Créer une nouvelle commande.</p>
 			{% endif %}
-
 		</div>
-		<div class="ticketing-home-title ticketing-payment-title">
+		<div class="ticketing-home-title">
 			<h4>2.&nbsp;</h4>
 			<a href="{{ path('jni_ticketing_home') }}" id="previous" class="btn btn-default">Modifier la commande</a> 
 			<h4>&nbsp;ou&nbsp;</h4>
