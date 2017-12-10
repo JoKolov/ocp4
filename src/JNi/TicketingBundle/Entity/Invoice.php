@@ -314,8 +314,8 @@ class Invoice
      */
     public function getAmountWithCurrency()
     {
-        $amount = $this->amount / 100;
-        return $amount . " " . $this->getCurrency();
+        $amount = substr_replace($this->amount, ',', -2, 0);
+        return $amount . " €";
     }
 
     /**

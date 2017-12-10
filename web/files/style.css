@@ -32,16 +32,10 @@
 		max-width: 850px; /* original : 1170px; */
 	}
 }
-.btn-primary {
-	color: #fff;
-	background-color: #c82d00;
-	border-color: #666;
-}
-
-.btn-primary:hover {
-	color: #fff;
-	background-color: #ff511e;
-	border-color: #666;
+.alert-info {
+    color: #222;
+    background-color: #eee;
+    border-color: #ccc;
 }
 
 
@@ -56,6 +50,10 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: "Georgia", sans-serif;
+}
+
+.strong {
+	font-weight: bold;
 }
 
 /**
@@ -212,7 +210,7 @@ nav ul {
 	padding: 0em; /*1em*/
 	font-size: 0.9em;
 }
-.block-body p, .block-body label {
+.block-body p, .block-body label, .block-body .table {
 	color: #4E4E4E;
 }
 footer {
@@ -328,6 +326,18 @@ footer {
 /**
  * Forms
  */
+
+.btn-form-action, .btn-form-action:visited {
+	color: #fff;
+	background-color: #c82d00;
+	border-color: #b42c05;
+}
+
+.btn-form-action:hover, .btn-form-action:active {
+	color: #fff;
+	background-color: #ff511e;
+	border-color: #ec4a1a;
+}
 .form-horizontal .form-group {
 	margin-left: 0px;
 	margin-right: 0px;
@@ -350,6 +360,13 @@ footer {
 	margin-right: -15px;
 	margin-left: -15px;
 }
+.help-block ul li {
+	color: #c82d00;
+}
+.help-block + input {
+	background-color: #f2dede;
+}
+
 /**
  * Aside
  */
@@ -369,18 +386,51 @@ footer {
 	box-shadow: none;
 }
 
-.ticketing-invoice, .ticketing-invoice .list-group, .ticketing-invoice .list-group-item {
+.ticketing-invoice {
 	border: none;
 }
-.ticketing-invoice .list-group-item {
-	padding-bottom: 5;
-	padding-top: 5;
+
+.highlight {
+	font-weight: bold;
+	color: #c82d00;
 }
 
-.ticketing-invoice .list-group-item + .border-top-solid {
+.ticketing-invoice-important {
+	font-size: 1.2em;
+}
+
+.ticketing-invoice .table tr td {
+	border-top: none;
+	padding: 4px;
+}
+
+.border-top-solid {
 	border-top: 1px solid #ccc;
 }
 
-.ticketing-invoice .list-group-item + .border-top-dashed {
+.border-top-dashed {
 	border-top: 1px dashed #ccc;
+}
+
+.border-bottom-dashed {
+	border-bottom: 1px dashed #ccc;
+}
+
+.table .ticketing-rate-case {
+	vertical-align: middle;
+	text-align: right;
+	font-size: 1.2em;
+	min-width: 4em;
+}
+
+.ticketing-invoice h6 {
+	font-family: inherit;
+}
+.ticketing-invoice .alert {
+	padding: 5px;
+	margin: 0;
+}
+
+.ticketing-invoice .btn {
+	margin: 0;
 }

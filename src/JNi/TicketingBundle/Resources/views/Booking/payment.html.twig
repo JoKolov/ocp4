@@ -25,35 +25,65 @@
 
 			{% if invoice %}
 				<div class="panel panel-default ticketing-invoice">
-					<ul class="list-group">
-					<li class="list-group-item">
-						Musée du Louvre <br />
-						Date de visite : {{ invoice.date|date('d/m/Y') }} <br />
+					<table class="table">
+						<tr>
+							<td>
+						<h5 class="highlight">Musée du Louvre </h5>
+						Date de visite : <span class="strong">{{ invoice.date|date('d / m / Y') }}</span> <br />
 						Validité : {{ invoice.ticketDayType }}
-					</li>
-					<li class="list-group-item border-top-solid">
-						Visiteurs: x {{ invoice.countVisitors }}
-						<ul class="list-group">
+						{% if invoice.halfDay %}
+							<span> ( entrée à partir de 14h )</span>
+						{% endif %}
+							</td>
+							<td class="ticketing-rate-case">
+							</td>
+						</tr>
+						<tr class="border-bottom-dashed">
+							<td>
+								{{ invoice.countVisitors }} visiteur{% if invoice.countVisitors > 1 %}s{% endif %}
+							</td>
+							<td class="ticketing-rate-case">
+							</td>
+						</tr>
 						{% for visitor in invoice.visitors %}
-							<li class="list-group-item" class="ticketing-payment-visitor">
-								<div class="pull-right ticket-rate">1</div>
+						<tr>
+							<td>
 								{{ visitor.fullName }}, {{ visitor.age }} ans
-							</li>
+								{% if visitor.reducedRate %}
+									<div class="alert alert-info" role="alert">Justificatif à présenter lors de l'entrée : carte d’étudiant, militaire ou équivalent</div>
+								{% endif %}
+							</td>
+							<td class="ticketing-rate-case">
+								.
+							</td>
+						</tr>
 						{% endfor %}
-						</ul>				
-					</li>
-
-					<li class="list-group-item border-top-solid">
-						Mode de retrait des billets : <div class="pull-right">Billet électronique</div>
-					</li>
-					<li class="list-group-item">
-						Email de confirmation : {{ invoice.email }}
-					</li>
-					<li class="list-group-item  border-top-dashed">
-						<span class="pull-right">{{ invoice.amountWithCurrency }}</span>
-						Montant de votre commande 
-					</li>
-					</ul>
+						<tr class="border-top-dashed">
+							<td>
+								Mode de retrait des billets
+								<button type="button" class="btn btn-default dropdown-toggle pull-right disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Billet électronique <span class="caret"></span></button>
+							</td>
+							<td class="ticketing-rate-case">
+								0,00 €
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Email de confirmation : <span class="strong">{{ invoice.email }}</span>
+							</td>
+							<td class="ticketing-rate-case">
+							</td>
+						</tr>
+						<tr class="border-top-solid">
+							<td class="highlight ticketing-invoice-important">
+								<span class="pull-right">Montant de votre commande</span> 
+							</td>
+							<td class="ticketing-rate-case highlight">
+								{{ invoice.amountWithCurrency }}
+							</td>
+						</tr>
+					</table>
 				</div>
 			{% else %}
 				<p>Votre panier est vide.</p>
@@ -62,11 +92,12 @@
 		</div>
 		<div class="ticketing-home-title">
 			<h4>2.&nbsp;</h4>
-			<a href="{{ path('jni_ticketing_home') }}" id="previous" class="btn btn-default">Modifier la commande</a> 
+			<a href="{{ path('jni_ticketing_home') }}" id="previous" class="btn btn-form-action">Modifier la commande</a> 
 			<h4>&nbsp;ou&nbsp;</h4>
 			{# formulaire stripe #}
+			
 			<form action="#" name="stripeForm" method="POST">
-				<script
+				{#<script
 					src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 					data-key="{{ stripePublicKey }}"
 					data-amount="{{ invoice.amount }}"
@@ -80,9 +111,51 @@
 				    data-label="Payer par CB"
 				    data-allowRememberMe="false">
 				</script>
+				#}
+				<button id="customButton" class="btn btn-default" type="submit">Payer par CB</button>
 			</form>
+			
 		</div>
 
 	</div>
 
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://checkout.stripe.com/checkout.js"></script>
+	<script>
+		$(document).ready(function() {
+			$("#customButton").prop('disabled', false)
+		})
+
+		var handler = StripeCheckout.configure({
+		  key: '{{ stripePublicKey }}',
+		  image: '/img/stripe-logo-01.jpg',
+		  locale: 'auto',
+		  token: function(token, args) {
+		  	$('#customButton').prop('disabled', true);
+			var $input = $('<input type=hidden name=stripeToken />').val(token.id);
+			$('form').append($input).submit();
+		  }
+		});
+
+		document.getElementById('customButton').addEventListener('click', function(e) {
+		  // Open Checkout with further options:
+		  handler.open({
+		    name: 'Musée du Louvre',
+		    description: 'Paiement commande',
+		    zipCode: true,
+		    amount: {{ invoice.amount }},
+		    currency: '{{ invoice.currency }}',
+		    email: '{{ invoice.email }}',
+		    allowRememberMe: false
+		  });
+		  e.preventDefault();
+		});
+
+		// Close Checkout on page navigation:
+		window.addEventListener('popstate', function() {
+		  handler.close();
+		});
+	</script>
 {% endblock %}
