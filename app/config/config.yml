@@ -31,7 +31,7 @@ framework:
     http_method_override: true
     assets: 
         base_urls:
-            - 'http://ocp4'
+            - 'http://ocp4.nicoloff.fr'
     php_errors:
         log: true
 

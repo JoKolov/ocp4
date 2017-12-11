@@ -3,19 +3,15 @@
 
 namespace JNi\TicketingBundle\Service\Email;
 
-//use JNi\TicketingBundle\Entity\Invoice;
-
 class Email
 {
 	private $mailer;
-	private $router;
 	private $templating;
 
 
-	public function __construct($mailer, $router, $templating)
+	public function __construct($mailer, $templating)
 	{
 		$this->mailer = $mailer;
-		$this->router = $router;
 		$this->templating = $templating;
 	}
 
@@ -35,8 +31,7 @@ class Email
         $message->setBody(
             $this->templating->render(
                 'JNiTicketingBundle:Email:confirmation.html.twig', [
-                    'invoice'   => $invoice,
-                    'urlConfirmation'   => $this->router->generate('jni_ticketing_order_confirmation', ['key' => $invoice->getHashedKey()])
+                    'invoice'   => $invoice
                 ]
             ), 'text/html'
         );
