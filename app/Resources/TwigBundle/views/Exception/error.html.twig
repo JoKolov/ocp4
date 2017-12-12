@@ -1,0 +1,55 @@
+{% extends "JNiDefaultBundle::layout.html.twig" %}
+
+{% block title %}
+    Error - {{ parent() }}
+{% endblock %}
+
+{% block nav %}
+    <div class="header-title">
+        <h1></h1>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="col-sm-12 text-center">
+        <h3>Oula... quelque chose s'est mal passé !</h3>
+        <h5>Veuillez nous excuser pour la gêne occasionnée.</h5>
+        <p class="text-center btn-list-error"><a href="{{ path('jni_default_home') }}" class="btn btn-default">Retourner à la page d'accueil</a></p>
+    </div>
+    <div class="col-sm-offset-2 col-sm-8">
+        <div class="panel panel-default panel-error">
+            <div id="panel-error-heading" class="panel-heading"><span id="carret" class="glyphicon glyphicon-triangle-bottom pull-right" aria-hidden="true"></span>Error details</div>
+            <div class="panel-body">
+                <p><b>Error code : {{ status_code }}</b></p>
+                <p>{{ status_text }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var errorDisplay = false;
+        $(document).ready(function() {
+            $(".panel-error .panel-body").css({
+                'display': 'none',
+            });
+        });
+        document.getElementById('panel-error-heading').addEventListener('click', function(e) {
+            if (errorDisplay == false) {
+                $(".panel-error .panel-body").css({
+                    'display': 'block',
+                });
+                $(".panel-error .panel-heading span").toggleClass('glyphicon-triangle-bottom').toggleClass('glyphicon-triangle-top');
+                errorDisplay = true;
+            }
+            else {
+                $(".panel-error .panel-body").css({
+                    'display': 'none',
+                });
+                $(".panel-error .panel-heading span").toggleClass('glyphicon-triangle-top').toggleClass('glyphicon-triangle-bottom');
+                errorDisplay = false;
+            }
+        });
+    </script>
+{% endblock %}
