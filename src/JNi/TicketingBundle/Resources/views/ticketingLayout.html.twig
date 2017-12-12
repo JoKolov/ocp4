@@ -18,10 +18,10 @@
 {% block thread %}
 	<div class="col-xs-12 thread">
 		<p>
-			<a href="{{ path('jni_default_home') }}" class="thread-item" alt="Accueil du Musée du Louvre"><img src="/img/home_crumb.png" /><img src="/img/crumb-separator.png" class="thread-item-separator" /> Musée du Louvre</a>
-			<a href="{{ path('jni_ticketing_home') }}" class="thread-item"><img src="/img/crumb-separator.png" class="thread-item-separator" /> Réservation</a>
-			<a href="{{ path('jni_ticketing_payment') }}" class="thread-item"><img src="/img/crumb-separator.png" class="thread-item-separator" /> Paiement</a>
-			<a href="" class="thread-item"><img src="/img/crumb-separator.png" class="thread-item-separator" /> Confirmation</a>
+			<a href="{{ path('jni_default_home') }}" class="thread-item thread-item-home" alt="Accueil du Musée du Louvre"><img src="/img/home_crumb.png" /></a>
+			{% for route, text in thread %}
+			<a href="{{ route }}" class="thread-item thread-item-separator">{{ text }}</a>
+			{% endfor %}
 		</p>
 	</div>	
 {% endblock %}

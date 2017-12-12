@@ -59,7 +59,8 @@ class BookingController extends Controller
 
     	// 1st view or invalid form => show form
         return $this->render('JNiTicketingBundle:Booking:index.html.twig', [
-            'formInvoice'   => $formInvoice->createView()
+            'formInvoice'   => $formInvoice->createView(),
+            'thread'        => [$this->generateUrl('jni_ticketing_home') => 'Musée du Louvre Paris']
         ]);
     }
 
@@ -122,7 +123,10 @@ class BookingController extends Controller
         // display view : basket summary + stripe form
         return $this->render('JNiTicketingBundle:Booking:payment.html.twig', [
             'invoice'           => $invoice,
-            'stripePublicKey'   => $this->container->getParameter('stripe_public_key')
+            'stripePublicKey'   => $this->container->getParameter('stripe_public_key'),
+            'thread'            => [
+                $this->generateUrl('jni_ticketing_home')    => 'Sélection de billets', 
+                $this->generateUrl('jni_ticketing_payment') => 'Votre Panier']
         ]);
     }
 
@@ -160,7 +164,8 @@ class BookingController extends Controller
 
         // invoice found
         return $this->render('JNiTicketingBundle:Booking:confirmation.html.twig', [
-            'invoice'       => $invoice
+            'invoice'       => $invoice,
+            'thread'        => [$this->generateUrl('jni_ticketing_order_confirmation') => 'Votre réservation']
         ]);
     }
 

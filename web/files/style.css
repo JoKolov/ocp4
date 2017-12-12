@@ -248,14 +248,25 @@ footer {
 	line-height: 25px;
 }
 
+.thread-item-home {
+	margin-left: 1em;
+}
+
 .thread-item-separator {
+	background-image: url("/img/crumb-separator.png");
+	background-repeat: no-repeat;
+	background-position-x: left;
 	margin-left: -0.5em;
+	padding-left : 1.5em;
+	padding-right: 1em;
+}
+.thread-item-separator:before {
+
 }
 
 .thread-item, .thread-item:visited {
 	color: #fff;
 	text-decoration: none;
-	margin-left: 1em;
 }
 
 .thread-item:hover, .thread-item:active {

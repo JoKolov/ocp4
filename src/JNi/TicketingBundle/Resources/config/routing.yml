@@ -1,11 +1,15 @@
 jni_ticketing_order_confirmation:
     path: /ticket/{key}
-    defaults: { _controller: JNiTicketingBundle:Booking:confirmation }
+    defaults:
+        _controller: JNiTicketingBundle:Booking:confirmation
+        key: 0
 
 jni_ticketing_home:
     path:     /
-    defaults: { _controller: JNiTicketingBundle:Booking:index }
+    defaults:
+        _controller: JNiTicketingBundle:Booking:index
 
 jni_ticketing_payment:
     path:     /payment
-    defaults: { _controller: JNiTicketingBundle:Booking:payment }
+    defaults:
+        _controller: JNiTicketingBundle:Booking:payment
