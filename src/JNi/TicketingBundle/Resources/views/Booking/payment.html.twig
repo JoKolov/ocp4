@@ -54,7 +54,6 @@
 								{% endif %}
 							</td>
 							<td class="ticketing-rate-case">
-								.
 							</td>
 						</tr>
 						{% endfor %}
@@ -94,24 +93,9 @@
 			<h4>2.&nbsp;</h4>
 			<a href="{{ path('jni_ticketing_home') }}" id="previous" class="btn btn-form-action">Modifier la commande</a> 
 			<h4>&nbsp;ou&nbsp;</h4>
+
 			{# formulaire stripe #}
-			
 			<form action="#" name="stripeForm" method="POST">
-				{#<script
-					src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-					data-key="{{ stripePublicKey }}"
-					data-amount="{{ invoice.amount }}"
-					data-name="Musée du Louvre"
-					data-description="Billetterie"
-					data-image="/img/stripe-logo-01.jpg"
-					data-locale="auto"
-					data-zip-code="true"
-				    data-currency="{{ invoice.currency }}"
-				    data-email="{{ invoice.email }}"
-				    data-label="Payer par CB"
-				    data-allowRememberMe="false">
-				</script>
-				#}
 				<button id="customButton" class="btn btn-default" type="submit">Payer par CB</button>
 			</form>
 			

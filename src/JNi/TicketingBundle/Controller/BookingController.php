@@ -153,14 +153,14 @@ class BookingController extends Controller
         $invoice = $repository->findOneBy(['hashedKey' => $key]);
 
         // invoice not found => redirect to ticketing home page
-        if (is_null($invoice))
+        /*if (is_null($invoice))
         {
             $session->getFlashBag()->add('alert', [
                 'type'      => 'warning',
                 'content'   => "La réservation demandée n'existe pas ou plus."
             ]);
             return $this->redirectToRoute('jni_ticketing_home');
-        }
+        }*/
 
         // invoice found
         return $this->render('JNiTicketingBundle:Booking:confirmation.html.twig', [

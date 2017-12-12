@@ -2,45 +2,98 @@
 {% extends "JNiTicketingBundle::ticketingLayout.html.twig" %}
 
 {% block bodyContent %}
-	<div class="col-sm-12">
-		<h3>Confirmation de réservation</h3>
-		
-		{% for message in app.session.flashbag.get('alert') %}
-			<p class="alert alert-{{ message.type }}">{{ message.content }}</p>
-		{% endfor %}
 
-		<p>
-			Votre billet a été envoyé à votre adresse email : {{ invoice.email }}. 
-			Imprimez-le et présentez-le à l'entrée du musée le jour de votre visite. <br />
-			Merci pour votre visite.
-		</p>
-	</div>
+	{% if invoice %}
+		<div class="col-sm-12">
+			<h3>Confirmation de réservation</h3>
+			
+			{% for message in app.session.flashbag.get('alert') %}
+				<p class="alert alert-{{ message.type }}">{{ message.content }}</p>
+			{% endfor %}
 
-	<div class="col-sm-12 ticketing-home-form">
-		<div class="ticketing-home-title title-underline">
-			<h4>Résumé de la réservation</h4>
+			<p>
+				Votre billet électronique a été envoyé à l'adresse email suivante : <span class="highlight">{{ invoice.email }}</span>. <br />
+				Imprimez-le et présentez-le à l'entrée du musée le jour de votre visite. <br />
+				Merci pour votre visite.
+			</p>
 		</div>
 
-		{# Booking form #}
-		<div class="ticketing-content">
+		<div class="col-sm-12 ticketing-home-form">
+			<div class="ticketing-home-title title-underline">
+				<h4>Résumé de la réservation</h4>
+			</div>
 
-			{% if invoice.payment.isvalid %}
-				<div class="well">
-					<p>Jour de la visite : {{ invoice.date|date('d/m/Y') }}</p>
-					<p>Email de validation : {{ invoice.email }}</p>
-					<p>Visiteurs enregistrés :</p>
-					<ul>
-					{% for visitor in invoice.visitors %}
-						<li>{{ visitor.fullName }}, {{ visitor.country }}, {{ visitor.age }} ans</li>
-					{% endfor %}
-					</ul>
-					<p>Total de la commande : {{ invoice.amountwithcurrency }}</p>
-					<p>STATUT : validé</p>
+			{# Booking form #}
+			<div class="ticketing-content">
+				<div class="panel panel-default ticketing-invoice">
+					<table class="table">
+						<tr class="border-bottom-dashed">
+							<td>
+								Billet électronique n° : {{ invoice.hashedKey }}
+							</td>
+							<td class="ticketing-rate-case highlight">
+							</td>
+						</tr>
+						<tr>
+							<td>
+						<h5 class="highlight">Musée du Louvre </h5>
+						Date de visite : {{ invoice.date|date('d/m/Y') }} <br />
+						Validité : {{ invoice.ticketDayType }}
+						{% if invoice.halfDay %}
+							<span> ( entrée à partir de 14h )</span>
+						{% endif %}
+							</td>
+							<td class="ticketing-rate-case">
+							</td>
+						</tr>
+						<tr class="border-bottom-dashed">
+							<td>
+								{{ invoice.countVisitors }} visiteur{% if invoice.countVisitors > 1 %}s{% endif %}
+							</td>
+							<td class="ticketing-rate-case">
+							</td>
+						</tr>
+						{% for visitor in invoice.visitors %}
+						<tr>
+							<td>
+								{{ visitor.fullName }}
+								{% if visitor.reducedRate %}
+									<div class="alert alert-info" role="alert">Justificatif à présenter lors de l'entrée : carte d’étudiant, militaire ou équivalent</div>
+								{% endif %}
+							</td>
+							<td class="ticketing-rate-case">
+							</td>
+						</tr>
+						{% endfor %}
+						<tr class="border-top-solid">
+							<td>
+								Date de la commande : {{ invoice.payment.date|date('d/m/Y') }} <br />
+								Montant réglé par CB : {{ invoice.amountWithCurrency }}
+							</td>
+							<td class="ticketing-rate-case highlight">
+							</td>
+						</tr>
+					</table>
 				</div>
-			{% else %}
-				<p>aucune réservation enregistrée</p>
-			{% endif %}
-
+			</div>
 		</div>
-	</div>
+
+	{% else %}
+		<div class="col-sm-12">
+			<h3>Votre réservation</h3>
+			
+			{% for message in app.session.flashbag.get('alert') %}
+				<p class="alert alert-{{ message.type }}">{{ message.content }}</p>
+			{% endfor %}
+
+			<p class="text-center">
+				La réservation demandée n'existe pas.
+			</p>
+			<p class="text-center">
+				<a href="{{ path('jni_default_home') }}" class="btn btn-default">Accueil</a>
+				<a href="{{ path('jni_ticketing_home') }}" class="btn btn-default">Billetterie</a>
+			</p>
+		</div>
+	{% endif %}
+
 {% endblock %}

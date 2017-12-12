@@ -136,7 +136,7 @@ header {
 .logo-and-nav {
 	height: 55px;
 	display: flex;
-	align-items: flex-end;
+	align-items: center;
 	color: #fff;
 	padding-left: 0px;
 }
@@ -164,7 +164,6 @@ nav ul {
 
 .logo-and-nav .nav li a, .logo-and-nav .nav li a:visited {
 	color: #fff;
-	height: 100%;
 	padding: 6px;
 }
 
@@ -185,6 +184,14 @@ nav ul {
 }
 .logo-and-nav nav a:hover span {
 	color: #ff0000;
+}
+
+.logo-and-nav nav li a.nav-item-ticketing {
+	padding:10px;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 
@@ -225,6 +232,9 @@ nav ul {
 .block-body p, .block-body label, .block-body .table {
 	color: #4E4E4E;
 }
+.block-body a {
+	color: #999;
+}
 footer {
 	min-height: 5em;
 	background-color: #222;
@@ -240,6 +250,45 @@ footer {
 	background-color: #222;
 	color: #fff;
 	padding: 1em;
+}
+/**
+ * Blocs image
+ */
+.block-img-home {
+	min-height: 230px;
+	width: 100%;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.img-01 {
+	background-image: url('/img/home/home-bloc-01.jpg');
+}
+.img-02 {
+	background-image: url('/img/home/home-bloc-02.jpg');
+}
+.img-03 {
+	background-image: url('/img/home/home-bloc-03.jpg');
+}
+.img-11 {
+	background-image: url('/img/home/home-bloc-11.jpg');
+}
+.img-12 {
+	background-image: url('/img/home/home-bloc-12.jpg');
+}
+.img-13 {
+	background-image: url('/img/home/home-bloc-13.jpg');
+}
+.img-ticketing {
+	background-image: url('/img/home/home-bloc-ticketing.jpg');
+}
+.welcome-block>div {
+	padding: 15px 0;
+}
+/**
+ * home content
+ */
+.home-content {
+	padding: 15px 0;
 }
 
 
