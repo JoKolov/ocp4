@@ -17,8 +17,12 @@ $(document).ready(function() {
       addVisitor($container);
     } else {
       // S'il existe déjà des visiteurs, on ajoute un lien de suppression pour chacune d'entre elles
+      // et on réaffecte le bon texte aux label Visiteurs
+      var visitorId;
       $container.children('div').each(function() {
         addDeleteLink($(this));
+        visitorId = parseInt($(this).children('.visitor-del-btn + label').text()) + 1;
+        $(this).children('.visitor-del-btn + label').html('Visiteur n°' + visitorId);
       });
     }
 
@@ -46,10 +50,10 @@ $(document).ready(function() {
     // La fonction qui ajoute un lien de suppression d'un visiteur
     function addDeleteLink($prototype) {
       // Création du lien
-      var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+      var $deleteLink = $('<a href="#" class="btn btn-form-action visitor-del-btn pull-right"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>');
 
       // Ajout du lien
-      $prototype.append($deleteLink);
+      $prototype.prepend($deleteLink);
 
       // Ajout du listener sur le clic du lien pour effectivement supprimer un visiteur
       $deleteLink.click(function(e) {
