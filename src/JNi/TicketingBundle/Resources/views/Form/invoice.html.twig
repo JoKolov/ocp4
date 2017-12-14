@@ -28,9 +28,12 @@
 		</div>			
 
 		{# Form : subform Visitor #}
-		{{ form_row(formInvoice.visitors) }}
+		<div class="ticketing-form-title ticketing-home-title"><h4>Liste des visiteurs</h4></div>
+		{{ form_widget(formInvoice.visitors) }}
+
 		<div class="ticketing-home-title ticketing-form-title">
 			<a href="#" id="add_visitor" class="btn btn-form-action">Ajouter un visiteur</a>
+			&nbsp;ou&nbsp;
 			{{ form_widget(formInvoice.valid, {'attr': {'class': 'btn-default'}}) }}
 		</div>
 

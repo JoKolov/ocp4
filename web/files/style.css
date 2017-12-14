@@ -276,10 +276,10 @@ footer {
 	background-image: url('/img/home/home-bloc-12.jpg');
 }
 .img-13 {
-	background-image: url('/img/home/home-bloc-13.jpg');
+	background-image: url('/img/home/home-bloc-13.JPG');
 }
 .img-ticketing {
-	background-image: url('/img/home/home-bloc-ticketing.jpg');
+	background-image: url('/img/home/home-bloc-ticketing2.jpg');
 }
 .welcome-block>div {
 	padding: 15px 0;
@@ -352,6 +352,7 @@ footer {
 }
 .ticketing-home-title h4 {
 	font-family: "Arial", sans-serif;
+	color: #fff;
 }
 .title-underline {
 	border-bottom: 2px solid #ccc;
@@ -399,17 +400,22 @@ footer {
  * Forms
  */
 
-.btn-form-action, .btn-form-action:visited {
+a.btn-form-action, a.btn-form-action:visited {
 	color: #fff;
 	background-color: #c82d00;
 	border-color: #b42c05;
 }
 
-.btn-form-action:hover, .btn-form-action:active {
+a.btn-form-action:hover, a.btn-form-action:active {
 	color: #fff;
 	background-color: #ff511e;
 	border-color: #ec4a1a;
 }
+
+.visitor-del-btn + label {
+	padding-left: 1em;
+}
+
 .form-horizontal .form-group {
 	margin-left: 0px;
 	margin-right: 0px;
@@ -505,4 +511,13 @@ footer {
 
 .ticketing-invoice .btn {
 	margin: 0;
+}
+.form-visitor-separator {
+	width: 100%;
+	padding-bottom: 1em;
+}
+
+.ticketing-form .form-group .col-sm-6 {
+	padding-right: 1px;
+	padding-left: 0;
 }

@@ -7,18 +7,28 @@ $(document).ready(function() {
 
     // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
     $('#add_visitor').click(function(e) {
-      addVisitor($container);
-      e.preventDefault(); // évite qu'un # apparaisse dans l'URL
-      return false;
-    });
+        addVisitor($container);
+        $container.children(':last-child').attr('id', 'visitor-' + index);
+        //$container.children('div').children('div').children(".form-group:not(:last-child)").addClass("col-sm-6");
+        //$('html,body,document').animate({scrollTop: $('#visitor-' + index).offset().top}, 1000); // scroll vers le formulaire ajouté
+        e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+        return false;
+      });
 
     // On ajoute un premier champ automatiquement s'il n'en existe pas déjà un.
     if (index == 0) {
       addVisitor($container);
     } else {
       // S'il existe déjà des visiteurs, on ajoute un lien de suppression pour chacune d'entre elles
+      // et on réaffecte le bon texte aux label Visiteurs
+      var visitorId;
       $container.children('div').each(function() {
         addDeleteLink($(this));
+        visitorId = parseInt($(this).children('.visitor-del-btn + label').text()) + 1;
+        $(this).attr('id', 'visitor-' + visitorId);
+        $(this).children('.visitor-del-btn + label').html('Visiteur n°' + visitorId);
+        $(this).append($('<div class="form-visitor-separator border-bottom-dashed"></div>'));
+        //$(this).children('div').children(".form-group:not(:last-child)").addClass("col-sm-6");
       });
     }
 
@@ -28,9 +38,10 @@ $(document).ready(function() {
       // Dans le contenu de l'attribut « data-prototype », on remplace :
       // - le texte "__name__label__" qu'il contient par le label du champ
       // - le texte "__name__" qu'il contient par le numéro du champ
-      var template = $container.attr('data-prototype')
-        .replace(/__name__label__/g, 'Visiteur n°' + (index+1))
-        .replace(/__name__/g,        index)
+      var template = $container
+        .attr('data-prototype')
+          .replace(/__name__label__/g, 'Visiteur n°' + (index+1))
+          .replace(/__name__/g,        index)
       ;
 
       // On crée un objet jquery qui contient ce template
@@ -46,10 +57,10 @@ $(document).ready(function() {
     // La fonction qui ajoute un lien de suppression d'un visiteur
     function addDeleteLink($prototype) {
       // Création du lien
-      var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+      var $deleteLink = $('<a href="#" class="btn btn-form-action visitor-del-btn"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>');
 
       // Ajout du lien
-      $prototype.append($deleteLink);
+      $prototype.prepend($deleteLink);
 
       // Ajout du listener sur le clic du lien pour effectivement supprimer un visiteur
       $deleteLink.click(function(e) {
