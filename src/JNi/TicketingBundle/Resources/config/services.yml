@@ -28,3 +28,11 @@ services:
         public: true
         tags:
           - { name: validator.constraint_validator, alias: ticketing.not_busy_day }
+#
+    ticketing.calendar:
+        class: JNi\TicketingBundle\Service\Calendar\BookingCalendar
+        arguments:
+          - "@=service('doctrine.orm.entity_manager').getRepository('JNiTicketingBundle:Invoice')"
+          - "@=service('doctrine.orm.entity_manager').getRepository('JNiTicketingBundle:Visitor')"
+          - "%ticketing_visitor_limit%"
+        public: true

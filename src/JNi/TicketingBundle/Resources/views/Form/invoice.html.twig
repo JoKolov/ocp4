@@ -10,6 +10,7 @@
 		<div class="form-group">
 			{{ form_label(formInvoice.date) }}
 			{{ form_errors(formInvoice.date) }}
+			{#<div id="datepicker" data-provide="datepicker-inline"></div>#}
 			{{ form_widget(formInvoice.date) }}
 		</div>
 
@@ -33,7 +34,7 @@
 
 		<div class="ticketing-home-title ticketing-form-title">
 			<a href="#" id="add_visitor" class="btn btn-form-action">Ajouter un visiteur</a>
-			&nbsp;ou&nbsp;
+			<h4>&nbsp;ou&nbsp;</h4>
 			{{ form_widget(formInvoice.valid, {'attr': {'class': 'btn-default'}}) }}
 		</div>
 

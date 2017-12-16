@@ -61,6 +61,7 @@ class BookingController extends Controller
         return $this->render('JNiTicketingBundle:Booking:index.html.twig', [
             'formInvoice'   => $formInvoice->createView(),
             'thread'        => [$this->generateUrl('jni_ticketing_home') => 'Musée du Louvre Paris']
+            //'invalidDates'  => $this->get('ticketing.calendar')->getInvalidDates()
         ]);
     }
 

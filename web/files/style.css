@@ -369,6 +369,9 @@ footer {
 	background-color: #fff;
 	color: #000;
 }
+.ticketing-home-basket .list-group-item {
+	padding: 10px 5px;
+}
 .ticketing-home-info {
 	font-size: 0.8em;
 	padding: 1em;
@@ -520,4 +523,9 @@ a.btn-form-action:hover, a.btn-form-action:active {
 .ticketing-form .form-group .col-sm-6 {
 	padding-right: 1px;
 	padding-left: 0;
+}
+
+.datepicker-inline,
+.datepicker table {
+	width: 100%;
 }

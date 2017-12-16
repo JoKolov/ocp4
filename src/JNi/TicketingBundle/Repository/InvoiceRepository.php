@@ -10,4 +10,13 @@ namespace JNi\TicketingBundle\Repository;
  */
 class InvoiceRepository extends \Doctrine\ORM\EntityRepository
 {
+	// maximum date in future where invoice is registered
+	public function getMaxDate()
+	{
+		$stringDate = $this->createQueryBuilder('i')
+			->select('MAX(i.date)')
+			->getQuery()
+			->getSingleScalarResult();
+		return new \DateTimeImmutable($stringDate);
+	}
 }

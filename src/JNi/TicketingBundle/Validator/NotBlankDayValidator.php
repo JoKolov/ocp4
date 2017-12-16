@@ -61,4 +61,6 @@ class NotBlankDayValidator extends ConstraintValidator
 	{
 		return $this->getEasterDate($date)->add(new \DateInterval('P50D'))->format($this->dayFormat);
 	}
+
+	
 }

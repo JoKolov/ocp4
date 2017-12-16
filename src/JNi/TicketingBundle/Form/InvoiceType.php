@@ -16,8 +16,17 @@ class InvoiceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $calendarMinDate = new \datetime();
         $builder
-            ->add('date',       Type\DateType::class, ['label' => "Date de la visite", 'widget' => 'single_text'])
+            ->add('date', Type\DateType::class, [
+                'label'     => "Date de la visite", 
+                'widget'    => 'single_text',
+                'attr'      => [
+                    'min'   => $calendarMinDate->format('Y-m-d')
+                    //'style' => 'display: none;'
+                    ]
+                //'html5'     => false
+            ])
             ->add('halfDay',    Type\CheckboxType::class, ['label' => "Demi-journée (entrée à partir de 14h)", 'required' => false])
             ->add('email',      Type\EmailType::class, ['label' => "Email de confirmation"])
             ->add('visitors',    CollectionType::class, [

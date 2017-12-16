@@ -15,7 +15,7 @@
 		</p>
 	</div>
 
-	<div class="col-sm-8 ticketing-home-form">
+	<div id="ticketing-form" class="col-sm-8 ticketing-home-form">
 		<div class="ticketing-home-title title-underline">
 			<h4>Réservation de billets d'entrée</h4>
 		</div>
@@ -29,17 +29,11 @@
 		</div>
 	</div>
 
-	<div class="col-sm-4 ticketing-home-aside">
+	<div id="ticketing-aside" class="col-sm-4 ticketing-home-aside">
 		<div class="ticketing-home-title ticketing-home-basket-title title-underline">
-			<h4><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Panier</h4>
-		</div>
-		<div class="ticketing-home-basket">
-			<p class="text-center">panier vide</p>
-		</div>
-		<div class="ticketing-home-title">
 			<h4>Tarifs du musée</h4>
 		</div>
-		<div class="ticketing-home-info">
+		<div class="ticketing-home-basket">
 			<ul class="list-group">
 				<li class="list-group-item"><span class="badge">16 €</span><b>Normal</b> : à partir de 12 ans</li>
 				<li class="list-group-item"><span class="badge">8 €</span><b>Enfant</b> : à partir de 4 ans (*)</li>
@@ -64,4 +58,37 @@
 {% endblock %}
 
 {% block asideContent %}
+{% endblock %}
+
+{% block javascripts %}
+{#
+	<script>
+	$(document).ready(function() {
+		var datepicker = $.fn.datepicker.noConflict(); // return $.fn.datepicker to previously assigned value
+		$.fn.bootstrapDP = datepicker;                 // give $().bootstrapDP the bootstrap-datepicker functionality
+		$.fn.datepicker.defaults.format = "dd/mm/yyyy";
+		$('#datepicker').datepicker({
+			format: "dd/mm/yyyy",
+			maxViewMode: 2,
+			//language: "fr",
+			daysOfWeekDisabled: "0,2",
+			daysOfWeekHighlighted: "0,6",
+			todayHighlight: true,
+			datesDisabled: ['12/25/2017', '12/31/2017'],
+			toggleActive: true
+        });
+ 	});
+
+	document.getElementById('datepicker').addEventListener('click', function(e) {
+		alert('yo');
+		e.preventDefault();
+	});
+	/*$('#datepicker').on('changeDate', function() {
+	    //$('input#jni_ticketingbundle_invoice_date').val($('#datepicker').datepicker('getFormattedDate'));
+	    $('input#jni_ticketingbundle_invoice_date').attr('value', $('#datepicker').datepicker('getFormattedDate'));
+	    alert('yooo');
+	    alert($('input#jni_ticketingbundle_invoice_date').val());
+	});*/
+	</script>
+#}
 {% endblock %}

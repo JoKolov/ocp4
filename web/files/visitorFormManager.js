@@ -65,8 +65,12 @@ $(document).ready(function() {
       // Ajout du listener sur le clic du lien pour effectivement supprimer un visiteur
       $deleteLink.click(function(e) {
         $prototype.remove();
+        index--;
+        if (index <= 0) {
+          index = 0;
+        }
         e.preventDefault(); // évite qu'un # apparaisse dans l'URL
         return false;
       });
     }
-  });
+});

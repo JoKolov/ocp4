@@ -10,6 +10,10 @@ namespace JNi\TicketingBundle\Repository;
  */
 class VisitorRepository extends \Doctrine\ORM\EntityRepository
 {
+	/**
+	 * @param  Datetime $day
+	 * @return int      number of visitor for one day
+	 */
 	public function countForDay($day)
 	{
 		return (int) $this->createQueryBuilder('v')

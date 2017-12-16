@@ -96,9 +96,6 @@ class AmountCalculatorTest extends TestCase
 			->method('getListAdmissionRatesByAgeDESC')
 			->will($this->onConsecutiveCalls($admissionRatesByAgeDESC, $admissionRatesByAgeDESCreduced));
 
-		//var_dump($admissionRateRepository->getListAdmissionRatesByAgeDESC());
-		//var_dump($admissionRateRepository->getListAdmissionRatesByAgeDESC("reduced")); die;
-
 		return $admissionRateRepository;
 	}
 
