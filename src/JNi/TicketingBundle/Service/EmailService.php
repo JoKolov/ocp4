@@ -1,9 +1,9 @@
 <?php
-// src/JNi/TicketingBundle/Service/Email/Email.php
+// src/JNi/TicketingBundle/Service/EmailService.php
 
-namespace JNi\TicketingBundle\Service\Email;
+namespace JNi\TicketingBundle\Service;
 
-class Email
+class EmailService
 {
 	private $mailer;
 	private $templating;

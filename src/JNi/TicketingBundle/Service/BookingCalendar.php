@@ -1,7 +1,7 @@
 <?php
-// src/JNi/TicketingBundle/Service/Amount/AmountCalculator.php
+// src/JNi/TicketingBundle/Service/AmountCalculator.php
 
-namespace JNi\TicketingBundle\Service\Calendar;
+namespace JNi\TicketingBundle\Service;
 
 use JNi\TicketingBundle\Repository\InvoiceRepository;
 use JNi\TicketingBundle\Repository\VisitorRepository;

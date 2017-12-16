@@ -1,7 +1,7 @@
 <?php
-// src/JNi/TicketingBundle/Service/Payment/PaymentService.php
+// src/JNi/TicketingBundle/Service/PaymentService.php
 
-namespace JNi\TicketingBundle\Service\Payment;
+namespace JNi\TicketingBundle\Service;
 
 use JNi\TicketingBundle\Entity\Invoice;
 use JNi\TicketingBundle\Entity\Payment;
@@ -12,12 +12,10 @@ use Stripe\Error;
 class PaymentService
 {
 	private $stripeSecretKey;
-    private $errorCode;
 
-	public function __construct($stripeSecretKey, $errorCode)
+	public function __construct($stripeSecretKey)
 	{
 		$this->stripeSecretKey = $stripeSecretKey;
-        $this->errorCode = $errorCode;
 	}
 
 	/**
@@ -49,15 +47,15 @@ class PaymentService
         } // error throw payment process
         catch(Error\Card $e) 
         {
-            throw new \Exception("Erreur ! la carte a été rejetée, aucune transaction n'a eu lieu. Vous pouvez réessayer.", $this->errorCode);
+            throw new \Exception("Erreur ! la carte a été rejetée, aucune transaction n'a eu lieu. Vous pouvez réessayer.");
         }
         catch (Error\Base $e)
         {
-            throw new \Exception("Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu. Vous pouvez réessayer.", $this->errorCode);
+            throw new \Exception("Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu. Vous pouvez réessayer.");
         }
         catch (\Exception $e)
         {
-            throw new \Exception("Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu. Vous pouvez réessayer.", $this->errorCode);
+            throw new \Exception("Erreur ! le paiement a été rejeté, aucune transaction n'a eu lieu. Vous pouvez réessayer.");
         }
 	}
 }

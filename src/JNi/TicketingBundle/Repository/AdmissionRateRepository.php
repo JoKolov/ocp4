@@ -8,7 +8,7 @@ namespace JNi\TicketingBundle\Repository;
  */
 class AdmissionRateRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function getListAdmissionRatesByAgeDESC($type = "standard")
+	public function getListByAgeDESC($type = "standard")
 	{
 		$queryBuilder = $this->createQueryBuilder('admissionRate');
 		$queryBuilder

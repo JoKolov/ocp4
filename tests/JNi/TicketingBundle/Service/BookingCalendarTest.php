@@ -2,7 +2,7 @@
 
 namespace test\JNi\TicketingBundle\Service;
 
-use JNi\TicketingBundle\Service\Calendar\BookingCalendar;
+use JNi\TicketingBundle\Service\BookingCalendar;
 use JNi\TicketingBundle\Repository\InvoiceRepository;
 use JNi\TicketingBundle\Repository\VisitorRepository;
 use PHPUnit\Framework\TestCase;

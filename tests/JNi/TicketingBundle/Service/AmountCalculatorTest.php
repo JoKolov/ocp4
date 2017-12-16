@@ -2,7 +2,7 @@
 
 namespace test\JNi\TicketingBundle\Service;
 
-use JNi\TicketingBundle\Service\Amount\AmountCalculator;
+use JNi\TicketingBundle\Service\AmountCalculator;
 use JNi\TicketingBundle\Repository\AdmissionRateRepository;
 use JNi\TicketingBundle\Entity\AdmissionRate;
 use JNi\TicketingBundle\Entity\Invoice;
@@ -48,15 +48,42 @@ class AmountCalculatorTest extends TestCase
 			$this->getVisitor("2017-11-01", false)	//    0
 		]; // 						Total Amount 	 = 6400
 		$amount = 6400;
-
 		$invoice = $this->getInvoice($visitors);
 		$admissionRateRepository = $this->getAdmissionRateRepositoryMock();
 		$amountCalculator = new AmountCalculator($admissionRateRepository);
-
 		// assertion : check amount value is correct
 		$this->assertEquals(
 			$amount,
 			$amountCalculator->getInvoiceAmount($invoice)
+		);
+	}
+
+	/**
+	 * TEST
+	 * familly visitor amount
+	 */
+	public function testFamillyAmountValueGenerateMethod()
+	{
+		$visitors = [
+			$this->getVisitor("1986-06-24", false), // 1600
+			$this->getVisitor("1986-12-13", true),	// 1000
+			$this->getVisitor("2011-10-04", false),	//  800
+			$this->getVisitor("2011-10-11", true),	//  800
+			$this->getVisitor("1951-10-10", false), // 1200
+			$this->getVisitor("1952-07-26", true),	// 1000
+			$this->getVisitor("2017-11-01", false)	//    0
+		]; // 						Total Amount 	 = 6400
+		$amount = 6400;
+
+		$invoice = $this->getInvoice($visitors);
+		$admissionRateRepository = $this->getAdmissionRateRepositoryMock();
+		$amountCalculator = new AmountCalculator($admissionRateRepository);
+		$invoice = $amountCalculator->generateInvoiceAmount($invoice);
+
+		// assertion : check amount value is correct
+		$this->assertEquals(
+			$amount,
+			$invoice->getAmount()
 		);
 	}
 
@@ -68,7 +95,7 @@ class AmountCalculatorTest extends TestCase
 	private function getAdmissionRateRepositoryMock()
 	{
 		// creating results for 
-		// $admissionRateRepository->getListAdmissionRatesByAgeDESC()
+		// $admissionRateRepository->getListByAgeDESC()
 		$admissionRatesByAgeDESC = [];
 		$ages 	= [60, 		12, 	4, 		0];
 		$rates 	= [1200, 	1600, 	800, 	0];
@@ -82,7 +109,7 @@ class AmountCalculatorTest extends TestCase
 		}
 
 		// creating results for
-		// $admissionRateRepository->getListAdmissionRatesByAgeDESC("reduced")
+		// $admissionRateRepository->getListByAgeDESC("reduced")
 		$admissionRate = new admissionRate;
 		$admissionRate
 			->setMinimumAge(12)
@@ -93,7 +120,7 @@ class AmountCalculatorTest extends TestCase
 		$admissionRateRepository = $this->createMock(AdmissionRateRepository::class);
 		
 		$admissionRateRepository
-			->method('getListAdmissionRatesByAgeDESC')
+			->method('getListByAgeDESC')
 			->will($this->onConsecutiveCalls($admissionRatesByAgeDESC, $admissionRatesByAgeDESCreduced));
 
 		return $admissionRateRepository;

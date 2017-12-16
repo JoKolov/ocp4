@@ -67,9 +67,9 @@ class Visitor
     private $birthDate;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="admissionRate", type="decimal", precision=2, scale=0, nullable=true)
+     * @ORM\Column(name="admissionRate", type="integer", nullable=true)
      */
     private $admissionRate;
 
@@ -298,5 +298,11 @@ class Visitor
     public function getCountry()
     {
         return $this->country;
+    }
+
+
+    public function displayAdmissionRate()
+    {
+        return substr_replace($this->getAdmissionRate(), ',', -2, 0);
     }
 }

@@ -318,6 +318,11 @@ class Invoice
         return $amount . " €";
     }
 
+    public function getCurrencySymbol()
+    {
+        return "€";
+    }
+
     /**
      * Get ticket Day Type : ex : day / half-day
      *
